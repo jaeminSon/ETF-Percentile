@@ -118,6 +118,7 @@ def save_recent_data_to_database(new_stock_data: Dict[str, pd.DataFrame]):
 
 def update_database() -> None:
     with app.app_context():
+        print("update databse")
         assert table_exists(db.engine, TABLE_STOCK), "Table does not exist."
 
         now = datetime.now()
@@ -134,7 +135,7 @@ def update_database() -> None:
 if __name__ == "__main__":
     initialize_database(exist_ok=True)
 
-    schedule.every().day.at("23:13").do(update_database)
+    schedule.every().day.at("08:00").do(update_database)
     while True:
         schedule.run_pending()
         time.sleep(30)

@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 import numpy as np
 import pandas as pd
@@ -185,7 +185,7 @@ def all_stock_data(
 
             log_volume = np.log(df["Volume"][ticker]).to_frame("log_volume")
             volume_ratio, volume_ma = divide_by_rolling_ma(
-                df["Close"][ticker], window, True
+                df["Volume"][ticker], window, True
             )
             log_volume_ratio = np.log(volume_ratio)
             log_volume_ratio = log_volume_ratio.to_frame(f"log_volume_ratio_{window}ma")
@@ -217,3 +217,28 @@ def all_stock_data(
         data[ticker] = merge_dataframes(df_by_window)
 
     return data
+
+
+def distribution(
+    pdf: callable, x_range: Tuple[float, float], n_points: int = 1_000, drop_thresh=1e-2
+) -> Tuple[List[float], List[float]]:
+    """Returns x and y values for pdf
+    Args:
+        pdf: probability density function p such that p(x) returns probability value
+        x_range: tuple of (x_start, x_end)
+        n_points: number of points on x axis
+        drop_thresh: threshold for probability under which is dropped
+
+    Returns:
+        x: List of float representing x values
+        y: List of float representing y values
+    """
+    x_start, x_end = x_range
+    x = np.linspace(x_start, x_end, n_points)
+    y = [pdf(i)[0] for i in x]
+
+    if drop_thresh > 0:
+        x = [x[i] for i in range(len(x)) if y[i] > drop_thresh]
+        y = [y[i] for i in range(len(y)) if y[i] > drop_thresh]
+
+    return x, y
