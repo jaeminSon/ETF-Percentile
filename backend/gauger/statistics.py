@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import scipy
 
-from .yahoo_finance import download_all, download, period
+from .yahoo_finance import download_all, download, period, all_tickers
 
 
 def divide_by_rolling_ma(
@@ -121,44 +121,18 @@ def stock_data(
 
     data = {}
     for ticker in tickers:
-        df_by_window = []
+        df_by_window = [
+            df["Volume"][ticker].to_frame("price"),
+            df["Volume"][ticker].to_frame("volume"),
+        ]
         for i, window in enumerate([20, 50, 100, 200]):
-            price = df["Close"][ticker].to_frame(f"price")
             price_ratio, price_ma = divide_by_rolling_ma(
                 df["Close"][ticker], window, True
             )
             price_ratio = price_ratio.to_frame(f"price_ratio_{window}ma")
             price_ma = price_ma.to_frame(f"price_{window}ma")
 
-            log_volume = np.log(df["Volume"][ticker]).to_frame("log_volume")
-            volume_ratio, volume_ma = divide_by_rolling_ma(
-                df["Close"][ticker], window, True
-            )
-            log_volume_ratio = np.log(volume_ratio)
-            log_volume_ratio = log_volume_ratio.to_frame(f"log_volume_ratio_{window}ma")
-            log_volume_ma = np.log(volume_ma)
-            log_volume_ma = log_volume_ma.to_frame(f"log_volume_{window}ma")
-
-            if i == 0:
-                merged_df = merge_dataframes(
-                    [
-                        price,
-                        price_ratio,
-                        price_ma,
-                        log_volume,
-                        log_volume_ratio,
-                        log_volume_ma,
-                    ]
-                )
-            else:
-                merged_df = merge_dataframes(
-                    [
-                        price_ratio,
-                        price_ma,
-                        log_volume_ratio,
-                        log_volume_ma,
-                    ]
-                )
+            merged_df = merge_dataframes([price_ratio, price_ma])
             df_by_window.append(merged_df)
 
         data[ticker] = merge_dataframes(df_by_window)
@@ -170,53 +144,8 @@ def all_stock_data(
     start_date: str,
     end_date: str = None,
 ):
-    df, tickers = download_all(start_date, end_date)
-
-    data = {}
-    for ticker in tickers:
-        df_by_window = []
-        for i, window in enumerate([20, 50, 100, 200]):
-            price = df["Close"][ticker].to_frame(f"price")
-            price_ratio, price_ma = divide_by_rolling_ma(
-                df["Close"][ticker], window, True
-            )
-            price_ratio = price_ratio.to_frame(f"price_ratio_{window}ma")
-            price_ma = price_ma.to_frame(f"price_{window}ma")
-
-            log_volume = np.log(df["Volume"][ticker]).to_frame("log_volume")
-            volume_ratio, volume_ma = divide_by_rolling_ma(
-                df["Volume"][ticker], window, True
-            )
-            log_volume_ratio = np.log(volume_ratio)
-            log_volume_ratio = log_volume_ratio.to_frame(f"log_volume_ratio_{window}ma")
-            log_volume_ma = np.log(volume_ma)
-            log_volume_ma = log_volume_ma.to_frame(f"log_volume_{window}ma")
-
-            if i == 0:
-                merged_df = merge_dataframes(
-                    [
-                        price,
-                        price_ratio,
-                        price_ma,
-                        log_volume,
-                        log_volume_ratio,
-                        log_volume_ma,
-                    ]
-                )
-            else:
-                merged_df = merge_dataframes(
-                    [
-                        price_ratio,
-                        price_ma,
-                        log_volume_ratio,
-                        log_volume_ma,
-                    ]
-                )
-            df_by_window.append(merged_df)
-
-        data[ticker] = merge_dataframes(df_by_window)
-
-    return data
+    tickers = all_tickers()
+    return stock_data(tickers, start_date, end_date)
 
 
 def distribution(

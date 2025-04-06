@@ -9,6 +9,10 @@ import yfinance as yf
 ALL_TICKERS = ["SPY", "QQQ", "SPXL", "TQQQ", "SOXL"]
 
 
+def all_tickers():
+    return ALL_TICKERS
+
+
 def download_all(start_date: str, end_date: Optional[str] = None) -> pd.DataFrame:
     if end_date is None:
         start_date, end_date = period(start_date)

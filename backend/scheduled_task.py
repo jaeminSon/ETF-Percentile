@@ -32,19 +32,11 @@ def save_to_database(stock_data: Dict[str, pd.DataFrame]) -> None:
                 price_50ma=row["price_50ma"],
                 price_100ma=row["price_100ma"],
                 price_200ma=row["price_200ma"],
-                log_volume=row["log_volume"],
-                log_volume_20ma=row["log_volume_20ma"],
-                log_volume_50ma=row["log_volume_50ma"],
-                log_volume_100ma=row["log_volume_100ma"],
-                log_volume_200ma=row["log_volume_200ma"],
                 price_ratio_20ma=row["price_ratio_20ma"],
                 price_ratio_50ma=row["price_ratio_50ma"],
                 price_ratio_100ma=row["price_ratio_100ma"],
                 price_ratio_200ma=row["price_ratio_200ma"],
-                log_volume_ratio_20ma=row["log_volume_ratio_20ma"],
-                log_volume_ratio_50ma=row["log_volume_ratio_50ma"],
-                log_volume_ratio_100ma=row["log_volume_ratio_100ma"],
-                log_volume_ratio_200ma=row["log_volume_ratio_200ma"],
+                volume=row["volume"],
             )
 
             objects.append(obj)
@@ -94,19 +86,11 @@ def save_recent_data_to_database(new_stock_data: Dict[str, pd.DataFrame]):
                     price_50ma=row["price_50ma"],
                     price_100ma=row["price_100ma"],
                     price_200ma=row["price_200ma"],
-                    log_volume=row["log_volume"],
-                    log_volume_20ma=row["log_volume_20ma"],
-                    log_volume_50ma=row["log_volume_50ma"],
-                    log_volume_100ma=row["log_volume_100ma"],
-                    log_volume_200ma=row["log_volume_200ma"],
                     price_ratio_20ma=row["price_ratio_20ma"],
                     price_ratio_50ma=row["price_ratio_50ma"],
                     price_ratio_100ma=row["price_ratio_100ma"],
                     price_ratio_200ma=row["price_ratio_200ma"],
-                    log_volume_ratio_20ma=row["log_volume_ratio_20ma"],
-                    log_volume_ratio_50ma=row["log_volume_ratio_50ma"],
-                    log_volume_ratio_100ma=row["log_volume_ratio_100ma"],
-                    log_volume_ratio_200ma=row["log_volume_ratio_200ma"],
+                    volume=row["volume"],
                 )
                 objects.append(obj)
 
