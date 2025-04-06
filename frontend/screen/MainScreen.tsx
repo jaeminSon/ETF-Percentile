@@ -22,7 +22,7 @@ export default function MainScreen({ route }: any) {
         x={data.date}
         y={data.price_ratio}
         title={`${data.ticker} (${data.date[data.date.length - 1]})`}
-        ylabel={`(Closed Price) / (${data.window} days MA)`}
+        ylabel={`(Closing Price) / (${data.window} days MA)`}
       />
       <CustomGaugeChart
         leftColor='#00ee00'
