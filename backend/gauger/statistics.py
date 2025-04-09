@@ -119,6 +119,7 @@ def stock_data(
     return_moving_average=False,
 ):
     df = download(tickers, start_date, end_date)
+    df.dropna(inplace=True)
 
     data = {}
     for ticker in tickers:
