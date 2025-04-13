@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text } from "react-native";
+import { ScrollView, View, Text, Dimensions } from "react-native";
 import { fetchChartData } from "../api";
 import CustomGauger from "../component/Gauger";
 import LineGraph from "../component/LineChart";
+import CustomBack from "../component/BackButton";
 
 export default function MainScreen({ route }: any) {
+  const screenWidth = Dimensions.get("window").width;
+  const padding = screenWidth / 20;
   const { ticker, window } = route.params;
   const [data, setData] = useState<any>(null);
 
@@ -42,6 +45,9 @@ export default function MainScreen({ route }: any) {
         title="Volume"
         percentile={data.volume_percentile}
       />
+      <View style={{ padding }}>
+      <CustomBack />
+      </View>
     </ScrollView>
   );
 }
