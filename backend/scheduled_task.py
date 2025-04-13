@@ -90,7 +90,7 @@ def save_recent_data_to_database(new_stock_data: Dict[str, pd.DataFrame]) -> Lis
                 break
 
             if (working_data[-1]["date"] == date) and (
-                abs(working_data[-1]["price"] - row["price"]) > 1e-6
+                abs(working_data[-1]["price"] - row["price"]) > 1e-3
             ):
                 # price differ significantly
                 tickers_replace.add(ticker)
