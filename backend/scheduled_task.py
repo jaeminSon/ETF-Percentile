@@ -38,18 +38,17 @@ def save_to_database(stock_data: Dict[str, pd.DataFrame]) -> None:
                 price_ratio_200ma=row["price_ratio_200ma"],
                 volume=row["volume"],
             )
-
             objects.append(obj)
 
-        db.session.add_all(objects)
-        db.session.commit()
+    db.session.add_all(objects)
+    db.session.commit()
 
 
 def initialize_database(exist_ok=False):
     with app.app_context():
         if not table_exists(db.engine, TABLE_STOCK):
             db.create_all()
-            stock_data = all_stock_data("1900-01-01")
+            stock_data = all_stock_data("1900-01-01", "2025-04-09")
             save_to_database(stock_data)
         else:
             assert exist_ok, f"Table '{TABLE_STOCK}' already exists."
@@ -127,7 +126,7 @@ def save_recent_data_to_database(new_stock_data: Dict[str, pd.DataFrame]) -> Lis
 
 def update_database() -> None:
     with app.app_context():
-        print("update databse")
+        print("update database")
         assert table_exists(db.engine, TABLE_STOCK), "Table does not exist."
 
         now = datetime.now()
@@ -135,8 +134,9 @@ def update_database() -> None:
         new_stock_data = all_stock_data(start_date, return_moving_average=False)
         tickers_replace = save_recent_data_to_database(new_stock_data)
         if len(tickers_replace) > 0:
+            print(f"update {tickers_replace}")
             remove_from_database(tickers_replace)
-            updated_stock_data = stock_data(tickers_replace, "1990-01-01")
+            updated_stock_data = stock_data(tickers_replace, "1990-01-01", return_moving_average=True)
             save_to_database(updated_stock_data)
 
 
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     initialize_database(exist_ok=True)
     update_database()
 
-    # schedule.every().day.at("08:00").do(update_database)
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(30)
+    schedule.every().day.at("08:00").do(update_database)
+    while True:
+        schedule.run_pending()
+        time.sleep(30)
