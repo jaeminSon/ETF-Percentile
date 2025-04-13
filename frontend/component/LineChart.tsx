@@ -1,10 +1,10 @@
-import React from 'react';
-import { Text, Dimensions } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import React from "react";
+import { Text, Dimensions } from "react-native";
+import { LineChart } from "react-native-chart-kit";
 
-const ScreenWidth = Dimensions.get('window').width;
-const chartWidth = ScreenWidth*95/100;
-const chartHeight = chartWidth/4;
+const ScreenWidth = Dimensions.get("window").width;
+const chartWidth = (ScreenWidth * 95) / 100;
+const chartHeight = chartWidth / 4;
 
 type Props = {
   x: number[];
@@ -15,25 +15,27 @@ type Props = {
 
 export default function LineGraph({ x, y, title, ylabel }: Props) {
   const data = {
-    labels: x.map((v, i) => (i % Math.floor(x.length / 5) === Math.floor(x.length / 10) ? v.toString() : '')),
+    labels: x.map((v, i) =>
+      i % Math.floor(x.length / 5) === Math.floor(x.length / 10)
+        ? v.toString()
+        : "",
+    ),
     datasets: [{ data: y }],
   };
 
   const chartConfig = {
-    backgroundGradientFrom: '#fff',
-    backgroundGradientTo: '#fff',
+    backgroundGradientFrom: "#fff",
+    backgroundGradientTo: "#fff",
     color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`,
-    labelColor: () => '#000',
+    labelColor: () => "#000",
     decimalPlaces: 1,
   };
 
   return (
-    <div style={{ width: chartWidth, margin: 'auto'}}>
-      <h1 style={{ textAlign: 'center'}}>
-        {title}
-      </h1>
-      <Text style={{ transform: [{ rotate: '-90deg' }], marginRight: 10 }}>
-       {ylabel}
+    <div style={{ width: chartWidth, margin: "auto" }}>
+      <h1 style={{ textAlign: "center" }}>{title}</h1>
+      <Text style={{ transform: [{ rotate: "-90deg" }], marginRight: 10 }}>
+        {ylabel}
       </Text>
       <LineChart
         data={data}
@@ -41,8 +43,8 @@ export default function LineGraph({ x, y, title, ylabel }: Props) {
         height={chartHeight}
         chartConfig={chartConfig}
         fromZero={true}
-        withInnerLines={false}  
-        withOuterLines={false}  
+        withInnerLines={false}
+        withOuterLines={false}
         withDots={false}
       />
     </div>
