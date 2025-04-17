@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Dimensions } from "react-native";
+import { SafeAreaView, View, Text, Dimensions, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 
@@ -43,40 +43,66 @@ export default function InputScreen({ navigation }: any) {
   };
 
   const screenWidth = Dimensions.get("window").width;
-  const padding = screenWidth / 20;
+  const screenHeight = Dimensions.get("window").height;
+  const paddingHorizontal = screenWidth / 10;
+  const paddingTop = screenHeight / 10;
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: "white",
+    },
+    inner: {
+      flex: 1,
+      paddingHorizontal: paddingHorizontal,
+      paddingTop: paddingTop,
+      backgroundColor: "white",
+    },
+    label: {
+      fontSize: 16,
+      fontWeight: "600",
+      marginBottom: 8,
+    },
+  });
 
   return (
-    <View style={{ padding, backgroundColor: "white" }}>
-      <h3 style={{ textAlign: "left" }}>Ticker</h3>
-      <DropDownPicker
-        open={openTicker}
-        value={ticker}
-        items={itemsTicker}
-        setOpen={setOpenTicker}
-        setValue={setTicker}
-        setItems={setItemsTicker}
-        onOpen={handleOpenTicker}
-        zIndex={2000}
-        zIndexInverse={2000}
-        containerStyle={{ marginBottom: 20 }}
-      />
-      <h3 style={{ textAlign: "left" }}>Moving Average Window</h3>
-      <DropDownPicker
-        open={openWindow}
-        value={window}
-        items={itemsWindow}
-        setOpen={setOpenWindow}
-        setValue={setWindow}
-        setItems={setItemsWindow}
-        onOpen={handleOpenWindowMA}
-        zIndex={1000}
-        zIndexInverse={1000}
-        containerStyle={{ marginBottom: 20 }}
-      />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.inner}>
+        <Text style={styles.label}>Ticker</Text>
+        <DropDownPicker
+          open={openTicker}
+          value={ticker}
+          items={itemsTicker}
+          setOpen={setOpenTicker}
+          setValue={setTicker}
+          setItems={setItemsTicker}
+          onOpen={handleOpenTicker}
+          zIndex={2000}
+          zIndexInverse={2000}
+          containerStyle={{ marginBottom: 20 }}
+        />
+        <Text style={styles.label}>Moving Average Window</Text>
+        <DropDownPicker
+          open={openWindow}
+          value={window}
+          items={itemsWindow}
+          setOpen={setOpenWindow}
+          setValue={setWindow}
+          setItems={setItemsWindow}
+          onOpen={handleOpenWindowMA}
+          zIndex={1000}
+          zIndexInverse={1000}
+          containerStyle={{ marginBottom: 20 }}
+        />
 
-      <Button mode="contained" onPress={handleSubmit} style={{ marginTop: 30 }}>
-        Compute Percentile
-      </Button>
-    </View>
+        <Button
+          mode="contained"
+          onPress={handleSubmit}
+          style={{ marginTop: 30 }}
+        >
+          Compute Percentile
+        </Button>
+      </View>
+    </SafeAreaView>
   );
 }

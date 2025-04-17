@@ -31,5 +31,15 @@ export default function CustomGauger({
       />
     );
   } else if (Platform.OS === "android") {
+    return (
+      <CustomGaugerAndroid
+        leftColor={leftColor}
+        leftText={leftText}
+        rightColor={rightColor}
+        rightText={rightText}
+        title={title}
+        percentile={percentile}
+      />
+    );
   }
 }

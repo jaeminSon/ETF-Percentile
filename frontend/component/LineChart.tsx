@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, StyleSheet } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 
 const ScreenWidth = Dimensions.get("window").width;
@@ -31,12 +31,29 @@ export default function LineGraph({ x, y, title, ylabel }: Props) {
     decimalPlaces: 1,
   };
 
+  const screenWidth = Dimensions.get("window").width;
+  const screenHeight = Dimensions.get("window").height;
+  const paddingHorizontal = screenWidth / 10;
+  const paddingTop = screenHeight / 10;
+
+  const styles = StyleSheet.create({
+    inner: {
+      flex: 1,
+      paddingHorizontal: paddingHorizontal,
+      paddingTop: paddingTop,
+      backgroundColor: "white",
+    },
+    label: {
+      fontSize: 16,
+      fontWeight: "600",
+      marginBottom: 8,
+      marginRight: 10,
+    },
+  });
+
   return (
-    <div style={{ width: chartWidth, margin: "auto" }}>
-      <h1 style={{ textAlign: "center" }}>{title}</h1>
-      <Text style={{ transform: [{ rotate: "-90deg" }], marginRight: 10 }}>
-        {ylabel}
-      </Text>
+    <View style={styles.inner}>
+      <Text style={styles.label}>{ylabel}</Text>
       <LineChart
         data={data}
         width={chartWidth}
@@ -47,6 +64,6 @@ export default function LineGraph({ x, y, title, ylabel }: Props) {
         withOuterLines={false}
         withDots={false}
       />
-    </div>
+    </View>
   );
 }

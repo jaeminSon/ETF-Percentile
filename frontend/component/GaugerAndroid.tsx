@@ -1,6 +1,7 @@
 import React from "react";
-import Gauge from "react-native-gauge";
 import { Dimensions } from "react-native";
+import { View, Text, Pressable } from "react-native";
+import { SegmentedArc } from "@shipt/segmented-arc-for-react-native";
 
 const screenWidth = Dimensions.get("window").width;
 const chartWidth = (screenWidth * 2) / 5;
@@ -24,37 +25,45 @@ export default function CustomGaugerAndroid({
   title,
   percentile,
 }: Props) {
-  return (
-    <div style={{ width: chartWidth, margin: "auto" }}>
-      <h1 style={{ textAlign: "center" }}>{title}</h1>
-      <Gauge
-        size={75}
-        progress={percentile / 100}
-        animated={true}
-        alwaysUseEndAngle={true}
-        endAngle={0}
-        unfilledEndAngle={0}
-        thickness={chartWidth / 20}
-        borderWidth={1}
-        needleWidth={10}
-        needleHeight={chartWidth / 20}
-        needleBorderRadius={25}
-      />
+  const segments = [
+    {
+      scale: 0.25,
+      filledColor: "#FF746E",
+      emptyColor: "#F2F3F5",
+      data: { label: "Red" },
+    },
+    {
+      scale: 0.25,
+      filledColor: "#F5E478",
+      emptyColor: "#F2F3F5",
+      data: { label: "Yellow" },
+    },
+    {
+      scale: 0.25,
+      filledColor: "#78F5CA",
+      emptyColor: "#F2F3F5",
+      data: { label: "Green" },
+    },
+    {
+      scale: 0.25,
+      filledColor: "#6E73FF",
+      emptyColor: "#F2F3F5",
+      data: { label: "Blue" },
+    },
+  ];
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: textMarginTop,
-        }}
-      >
-        <span style={{ fontSize: fontsize, color: leftColor }}>
-          {percentile} %
-        </span>
-        <span style={{ fontSize: fontsize, color: rightColor }}>
-          {rightText}
-        </span>
-      </div>
-    </div>
+  const ranges = ["10", "20", "30", "40", "50"];
+
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <SegmentedArc
+        segments={segments}
+        fillValue={70}
+        isAnimated={true}
+        animationDelay={1000}
+        showArcRanges={true}
+        ranges={ranges}
+      ></SegmentedArc>
+    </View>
   );
 }

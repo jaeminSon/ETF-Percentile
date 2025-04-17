@@ -46,7 +46,7 @@ export default function MainScreen({ route }: any) {
         percentile={data.volume_percentile}
       />
       <View style={{ padding }}>
-      <CustomBack />
+        <CustomBack />
       </View>
     </ScrollView>
   );
