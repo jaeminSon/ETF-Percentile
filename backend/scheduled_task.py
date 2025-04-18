@@ -48,7 +48,7 @@ def initialize_database(exist_ok=False):
     with app.app_context():
         if not table_exists(db.engine, TABLE_STOCK):
             db.create_all()
-            stock_data = all_stock_data("1900-01-01", "2025-04-09")
+            stock_data = all_stock_data("1900-01-01")
             save_to_database(stock_data)
         else:
             assert exist_ok, f"Table '{TABLE_STOCK}' already exists."
@@ -136,7 +136,9 @@ def update_database() -> None:
         if len(tickers_replace) > 0:
             print(f"update {tickers_replace}")
             remove_from_database(tickers_replace)
-            updated_stock_data = stock_data(tickers_replace, "1990-01-01", return_moving_average=True)
+            updated_stock_data = stock_data(
+                tickers_replace, "1990-01-01", return_moving_average=True
+            )
             save_to_database(updated_stock_data)
 
 
