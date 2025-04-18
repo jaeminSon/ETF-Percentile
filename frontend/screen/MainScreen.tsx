@@ -27,7 +27,7 @@ export default function MainScreen({ route }: any) {
         x={data.date}
         y={data.price_ratio}
         title={`${data.ticker} (${data.date[data.date.length - 1]})`}
-        ylabel={`(Closing Price) / (${data.window} days MA)`}
+        ylabel={`Price / ${data.window}-MA`}
       />
       <CustomGauger
         leftColor="#00ee00"

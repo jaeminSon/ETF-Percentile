@@ -81,7 +81,7 @@ export default function InputScreen({ navigation }: any) {
           zIndexInverse={2000}
           containerStyle={{ marginBottom: 20 }}
         />
-        <Text style={styles.label}>Moving Average Window</Text>
+        <Text style={styles.label}>Moving Average Window (Days)</Text>
         <DropDownPicker
           open={openWindow}
           value={window}
