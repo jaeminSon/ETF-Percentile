@@ -24,17 +24,21 @@ def percentile(values: List[float], index_target: int) -> float:
     return np.mean(np.array(values) < target_value) * 100
 
 
-def extract_data(d: Dict[str, List[object]], window: int) -> Dict[str, object]:
+def extract_data(
+    d: Dict[str, List[object]], window: int, n_data: int = 50
+) -> Dict[str, object]:
     ticker = d["ticker"][0]
     all_dates = [e.strftime("%Y-%m-%d") for e in d["date"]]
     price_ratio = d[f"price_ratio_{window}ma"]
     price_ratio_percentile = percentile(price_ratio, len(all_dates) - 1)
     volume_percentile = percentile(d["volume"], len(all_dates) - 1)
 
+    interval = len(all_dates) // n_data
+
     return {
         "ticker": ticker,
-        "date": all_dates,
-        "price_ratio": price_ratio,
+        "date": all_dates[-interval * (n_data - 1) - 1 :: interval],
+        "price_ratio": price_ratio[-interval * (n_data - 1) - 1 :: interval],
         "price_ratio_percentile": price_ratio_percentile,
         "volume_percentile": volume_percentile,
     }
