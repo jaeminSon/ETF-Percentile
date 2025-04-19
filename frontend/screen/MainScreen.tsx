@@ -1,15 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, View, Text, Dimensions } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import { ScrollView, View, Text, Dimensions, StyleSheet } from "react-native";
 import { fetchChartData } from "../api";
 import CustomGauger from "../component/Gauger";
 import LineGraph from "../component/LineChart";
 import CustomBack from "../component/BackButton";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
 
 export default function MainScreen({ route }: any) {
   const screenWidth = Dimensions.get("window").width;
-  const padding = screenWidth / 20;
+  const screenHeight = Dimensions.get("window").height;
+  const paddingBottom = screenHeight / 5;
+  const paddingLeft = screenWidth / 20;
+
+  const styles = StyleSheet.create({
+    button: {
+      flex: 1,
+      padding: paddingLeft,
+      paddingBottom: paddingBottom,
+    },
+  });
+
   const { ticker, window } = route.params;
   const [data, setData] = useState<any>(null);
+
+  const adUnitId = TestIds.ADAPTIVE_BANNER;
+  const bannerRef = useRef<BannerAd>(null);
 
   useEffect(() => {
     fetchChartData(ticker, window).then(setData);
@@ -45,9 +64,14 @@ export default function MainScreen({ route }: any) {
         title="Volume"
         percentile={data.volume_percentile}
       />
-      <View style={{ padding }}>
+      <View style={styles.button}>
         <CustomBack />
       </View>
+      <BannerAd
+        ref={bannerRef}
+        unitId={adUnitId}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      />
     </ScrollView>
   );
 }

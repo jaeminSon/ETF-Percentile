@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View, Text, Dimensions, StyleSheet, Pressable } from "react-native";
 import { SegmentedArc } from "@shipt/segmented-arc-for-react-native";
 
-const screenWidth = Dimensions.get("window").width;
-const chartWidth = (screenWidth * 2) / 5;
 const screenHeight = Dimensions.get("window").height;
 
 type Props = {
