@@ -1,5 +1,0 @@
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
-export JAVA_HOME=$(/usr/libexec/java_home -v17)
-eval "$(/opt/homebrew/bin/brew shellenv)"
-alias python3="/usr/bin/python3"
