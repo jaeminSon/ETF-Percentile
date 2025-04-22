@@ -1,12 +1,11 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict
 from collections import defaultdict
-from datetime import datetime
 
 import numpy as np
 from flask import Blueprint, request, jsonify
 
 from .models import Stock
-
+from .database import initialize_database, update_database
 
 main = Blueprint("main", __name__)
 
@@ -59,3 +58,10 @@ def get_stocks():
     res = extract_data(d, window)
     res["window"] = window
     return jsonify(res)
+
+
+@main.route("/update-database", methods=["POST"])
+def update_db():
+    initialize_database(exist_ok=True)
+    update_database()
+    return "Database updated", 200
