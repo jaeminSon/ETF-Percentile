@@ -5,13 +5,9 @@ try:
 except:
     pass
 
-HOST = os.getenv("DB_HOST")
-DB_NAME = os.getenv("DB_NAME")
-USER = os.getenv("DB_USER")
-PASSWORD = os.getenv("DB_PASSWORD")
 
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = f"postgresql://{USER}:{PASSWORD}@{HOST}/{DB_NAME}"
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SCHEDULER_API_ENABLED = True
