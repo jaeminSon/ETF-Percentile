@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy import Index
 
 from .extensions import db
 
@@ -19,6 +20,11 @@ class Stock(db.Model):
     price_ratio_100ma = db.Column(db.Float, nullable=True)
     price_ratio_200ma = db.Column(db.Float, nullable=True)
     volume = db.Column(db.Integer, nullable=True)
+
+    __table_args__ = (
+        Index('idx_ticker', 'ticker'),
+        Index('idx_date', 'date'),
+    )
 
     def to_dict(self):
         return {
