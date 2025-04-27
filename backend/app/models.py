@@ -22,8 +22,8 @@ class Stock(db.Model):
     volume = db.Column(db.Integer, nullable=True)
 
     __table_args__ = (
-        Index('idx_ticker', 'ticker'),
-        Index('idx_date', 'date'),
+        Index("idx_ticker", "ticker"),
+        Index("idx_date", "date"),
     )
 
     def to_dict(self):
