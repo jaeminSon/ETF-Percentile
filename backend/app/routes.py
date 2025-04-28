@@ -53,7 +53,6 @@ def serve(ticker: str, window: int, today: date):
     d = res2dict(res_data)
     res = extract_data(d, window)
     res["window"] = window
-    print("compute")
     return jsonify(res)
 
 
@@ -62,7 +61,6 @@ def get_stocks():
     ticker = request.args.get("ticker", type=str)
     window = request.args.get("window", type=int)
     today = date.today()
-    print(serve.cache_info())
     return serve(ticker, window, today)
 
 
