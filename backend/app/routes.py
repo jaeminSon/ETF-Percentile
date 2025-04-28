@@ -1,5 +1,7 @@
 from typing import List, Dict
 from collections import defaultdict
+from functools import lru_cache
+from datetime import date
 
 import numpy as np
 from flask import Blueprint, request, jsonify
@@ -43,21 +45,25 @@ def extract_data(
     }
 
 
-@main.route("/stocks", methods=["GET"])
-def get_stocks():
-    ticker = request.args.get("ticker", type=str)
-    window = request.args.get("window", type=int)
-
+@lru_cache(maxsize=48)
+def serve(ticker: str, window: int, today: date):
     res_data = (
         Stock.query.filter(Stock.ticker == ticker).order_by(Stock.date.asc()).all()
     )
     d = res2dict(res_data)
-
-    # TODO return if values in db
-
     res = extract_data(d, window)
     res["window"] = window
+    print("compute")
     return jsonify(res)
+
+
+@main.route("/stocks", methods=["GET"])
+def get_stocks():
+    ticker = request.args.get("ticker", type=str)
+    window = request.args.get("window", type=int)
+    today = date.today()
+    print(serve.cache_info())
+    return serve(ticker, window, today)
 
 
 @main.route("/update-database", methods=["POST"])
