@@ -6,8 +6,7 @@ from datetime import date
 import numpy as np
 from flask import Blueprint, request, jsonify
 
-from .models import Stock
-from .database import initialize_database, update_database
+from .database import StockModels, initialize_tables, update_database
 
 main = Blueprint("main", __name__)
 
@@ -28,7 +27,6 @@ def percentile(values: List[float], index_target: int) -> float:
 def extract_data(
     d: Dict[str, List[object]], window: int, n_data: int = 50
 ) -> Dict[str, object]:
-    ticker = d["ticker"][0]
     all_dates = [e.strftime("%Y-%m-%d") for e in d["date"]]
     price_ratio = d[f"price_ratio_{window}ma"]
     price_ratio_percentile = percentile(price_ratio, len(all_dates) - 1)
@@ -37,7 +35,6 @@ def extract_data(
     interval = len(all_dates) // n_data
 
     return {
-        "ticker": ticker,
         "date": all_dates[-interval * (n_data - 1) - 1 :: interval],
         "price_ratio": price_ratio[-interval * (n_data - 1) - 1 :: interval],
         "price_ratio_percentile": price_ratio_percentile,
@@ -47,11 +44,11 @@ def extract_data(
 
 @lru_cache(maxsize=48)
 def serve(ticker: str, window: int, today: date):
-    res_data = (
-        Stock.query.filter(Stock.ticker == ticker).order_by(Stock.date.asc()).all()
-    )
+    db_model = StockModels[ticker]
+    res_data = db_model.query.order_by(db_model.date.asc()).all()
     d = res2dict(res_data)
     res = extract_data(d, window)
+    res["ticker"] = ticker
     res["window"] = window
     return jsonify(res)
 
@@ -66,6 +63,6 @@ def get_stocks():
 
 @main.route("/update-database", methods=["POST"])
 def update_db():
-    initialize_database(exist_ok=True)
+    initialize_tables()
     update_database()
     return "Database updated", 200

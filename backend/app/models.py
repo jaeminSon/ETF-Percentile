@@ -1,15 +1,17 @@
 from datetime import datetime
 from sqlalchemy import Index
+from sqlalchemy.ext.declarative import declared_attr
 
 from .extensions import db
 
 
 class Stock(db.Model):
+    __abstract__ = True
+
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
     modified_at = db.Column(db.DateTime, default=datetime.now())
-    ticker = db.Column(db.String(10), nullable=False)
     price = db.Column(db.Float, nullable=True)
     price_20ma = db.Column(db.Float, nullable=True)
     price_50ma = db.Column(db.Float, nullable=True)
@@ -21,16 +23,15 @@ class Stock(db.Model):
     price_ratio_200ma = db.Column(db.Float, nullable=True)
     volume = db.Column(db.Integer, nullable=True)
 
-    __table_args__ = (
-        Index("idx_ticker", "ticker"),
-        Index("idx_date", "date"),
-    )
+    @declared_attr
+    def __table_args__(cls):
+        index_name = f"idx_{cls.__tablename__}_date"  # Make index name unique per table
+        return (Index(index_name, cls.date),)
 
     def to_dict(self):
         return {
             "id": self.id,
             "date": self.date,
-            "ticker": self.ticker,
             "price": self.price,
             "price_20ma": self.price_20ma,
             "price_50ma": self.price_50ma,
