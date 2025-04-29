@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
-import CustomGaugerAndroid from "./GaugerAndroid";
-import CustomGaugerWeb from "./GaugerWeb";
+import CustomGaugerAndroid from "./Gauger.android";
+import CustomGaugerWeb from "./Gauger.web";
 
 type Props = {
   leftColor: string;

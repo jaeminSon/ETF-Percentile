@@ -1,12 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { SafeAreaView, View, Text, Dimensions, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
-import {
-  BannerAd,
-  BannerAdSize,
-  TestIds,
-} from "react-native-google-mobile-ads";
+import AdBanner from "../component/Ads";
 
 export default function InputScreen({ navigation }: any) {
   // Ticker
@@ -72,9 +68,6 @@ export default function InputScreen({ navigation }: any) {
     },
   });
 
-  const adUnitId = TestIds.ADAPTIVE_BANNER;
-  const bannerRef = useRef<BannerAd>(null);
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inner}>
@@ -113,12 +106,7 @@ export default function InputScreen({ navigation }: any) {
           Compute Percentile
         </Button>
       </View>
-
-      <BannerAd
-        ref={bannerRef}
-        unitId={adUnitId}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-      />
+      <AdBanner />
     </SafeAreaView>
   );
 }
