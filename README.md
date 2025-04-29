@@ -1,6 +1,14 @@
-# Install
+# Setting up
 ```
-# install backend server on google cloud
+# set up  backend server on 
+$ cd backend
+$ pip install -r requirements.txt
+
+# set up frontend server
+$ cd frontend
+$ npm install
+
+# set up google cloud
 (LLM 의 high level plan 은 다음과 같았음)
 1. google cloud 가입 및 gcloud 설치
 2. google sql 생성
@@ -8,8 +16,6 @@
 4. kubernetes cluster 생성
 5. cloudsql credential 생성
 6. 쿠버네티스 yaml 파일 적용
-
-# install frontend server
 ```
 
 # Command
