@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-backend
+  template:
+    metadata:
+      labels:
+        app: flask-backend
+    spec:
+      containers:
+      - name: flask-backend
+        image: gcr.io/high-transit-157406/flask-backend:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          value: postgresql://postgres:<password>@127.0.0.1:<port>/stock
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.33.0
+        command: ["/cloud_sql_proxy",
+                  "-instances=high-transit-157406:asia-northeast3:stock-db-instance=tcp:<port>",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+      volumes:
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials

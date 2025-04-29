@@ -1,0 +1,50 @@
+# google sql 생성
+gcloud sql instances create stock-db-instance --database-version=POSTGRES_15 \\n  --cpu=1 --memory=4GB --region=asia-northeast3
+gcloud sql databases create stock --instance=stock-db-instance
+gcloud sql users set-password postgres --instance=stock-db-instance --password=<password>
+
+# docker build, push
+docker build --no-cache -t gcr.io/<google-project-id>/flask-backend:v1 .
+docker push gcr.io/<google-project-id>/flask-backend:v1 
+
+# docker cache 삭제
+docker system prune -a
+
+# GKE 생성
+gcloud container clusters create stock-gauger-cluster --num-nodes=1 --region=asia-northeast3
+gcloud container clusters get-credentials stock-gauger-cluster --region=asia-northeast3
+
+# GKE 삭제
+gcloud container clusters delete stock-gauger-cluster --region=asia-northeast3 
+
+# cloudsql credential 만들기 
+# (account, cloudsql-key 는 한번만 만들면 됨)
+gcloud iam service-accounts create cloudsql-accessor \
+  --description="Access Cloud SQL from GKE" \
+  --display-name="CloudSQL Accessor"
+gcloud projects add-iam-policy-binding <google-project-id> \
+  --member="serviceAccount:cloudsql-accessor@<google-project-id>.iam.gserviceaccount.com" \
+  --role="roles/cloudsql.client"
+gcloud iam service-accounts keys create cloudsql-key.json --iam-account=cloud-sql-proxy-sa@<google-project-id>.iam.gserviceaccount.com
+kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=cloudsql-key.json
+
+# 쿠버네티스 yaml 파일 적용
+kubectl apply -f secret.yaml
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+
+# 도커 이미지 다시 띄우기
+kubectl set image deployment/flask-backend flask-backend=gcr.io/<google-project-id>/flask-backend:v1
+kubectl rollout restart deployment/flask-backend
+
+# container 디버깅
+kubectl get pods 로 pod 이름 찾아냄 (e.g. flask-backend-85dc7b9557-r4hqw)
+kubectl get pod <pod-name> -o jsonpath='{.spec.containers[*].name}' 로 container 이름 찾아냄
+kubectl exec -it flask-backend-85dc7b9557-r4hqw flask-backend -- /bin/bash
+kubectl logs <pod-name>
+
+# replica 개수 조절
+kubectl scale deployment flask-backend --replicas=0 
+
+# curl
+curl -X POST 34.64.43.166:80/update-database 

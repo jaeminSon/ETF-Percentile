@@ -1,6 +1,13 @@
 # Install
 ```
-# install backend server
+# install backend server on google cloud
+(LLM 의 high level plan 은 다음과 같았음)
+1. google cloud 가입 및 gcloud 설치
+2. google sql 생성
+3. docker build, push
+4. kubernetes cluster 생성
+5. cloudsql credential 생성
+6. 쿠버네티스 yaml 파일 적용
 
 # install frontend server
 ```
