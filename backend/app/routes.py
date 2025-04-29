@@ -61,4 +61,5 @@ def get_stocks():
 def update_db():
     initialize_tables()
     update_database()
+    serve.cache_clear()
     return "Database updated", 200
