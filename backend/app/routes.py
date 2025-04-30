@@ -1,10 +1,11 @@
+import os
 from typing import List, Dict
 from collections import defaultdict
 from functools import lru_cache
 from datetime import date
 
 import numpy as np
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, send_from_directory
 
 from .database import StockModels, initialize_tables, update_database
 
@@ -63,3 +64,9 @@ def update_db():
     update_database()
     serve.cache_clear()
     return "Database updated", 200
+
+
+@main.route("/ads.txt")
+def ads_txt():
+    home_ads = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+    return send_from_directory(home_ads, "ads.txt")
