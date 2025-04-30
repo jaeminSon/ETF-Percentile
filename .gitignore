@@ -1,4 +1,6 @@
 # others
+caddyfile
+ads.txt
 misc
 kubernetes
 gcloud*
