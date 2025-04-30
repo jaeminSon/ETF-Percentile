@@ -16,6 +16,11 @@ $ npm install
 4. kubernetes cluster 생성
 5. cloudsql credential 생성
 6. 쿠버네티스 yaml 파일 적용
+
+# set up home server
+# portforwarding: router page 에서 세팅
+# Caddy for https on mac
+$ brew install caddy
 ```
 
 # Command
@@ -28,6 +33,9 @@ $ gunicorn -w 4 -b 0.0.0.0:8000 wsgi:app
 $ cd frontend
 $ npx expo start --web
 $ npx expo start --android
+
+# run caddy for https
+$ sudo caddy run --config ./Caddyfile --adapter caddyfile
 
 # build android app
 $ npx expo prebuild --platform android
