@@ -4,8 +4,8 @@ import { LineChart } from "react-native-chart-kit";
 
 const ScreenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
-const chartWidth = (ScreenWidth * 95) / 100;
-const chartHeight = (chartWidth * 9) / 21;
+const chartWidth = (ScreenWidth * 9) / 10;
+const chartHeight = (chartWidth * 11) / 21;
 
 type Props = {
   x: number[];
