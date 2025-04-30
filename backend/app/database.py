@@ -145,8 +145,8 @@ def update_database() -> None:
     start_date = (now - timedelta(days=7)).strftime("%Y-%m-%d")
     new_stock_data = all_stock_data(start_date, return_moving_average=False)
     tickers_replace = save_recent_data_to_database(new_stock_data)
-    print(tickers_replace)
     if len(tickers_replace) > 0:
+        print("Update Ticker", tickers_replace)
         remove_from_database(tickers_replace)
         updated_stock_data = stock_data(
             tickers_replace, "1990-01-01", return_moving_average=True
