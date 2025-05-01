@@ -66,10 +66,10 @@ def initialize_tables():
     if len(tickers_initialize) > 0:
         for ticker in tickers_initialize:
             StockModels[ticker].__table__.create(db.engine)
-        data = stock_data(
-            tickers_initialize, start_date="1900-01-01", return_moving_average=True
-        )
-        save_to_database(data)
+            data = stock_data(
+                [ticker], start_date="1900-01-01", return_moving_average=True
+            )
+            save_to_database(data)
 
 
 def remove_from_database(tickers_replace: List[str]):
