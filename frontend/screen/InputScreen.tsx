@@ -16,7 +16,7 @@ export default function InputScreen({ navigation }: any) {
     { label: "SPXL", value: "SPXL" },
   ]);
 
-  // Mving Average Window Size
+  // Moving Average Window Size
   const [openWindow, setOpenWindow] = useState(false);
   const [window, setWindow] = useState(100);
   const [itemsWindow, setItemsWindow] = useState([
