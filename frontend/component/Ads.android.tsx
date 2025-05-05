@@ -2,11 +2,10 @@ import { useRef } from "react";
 import {
   BannerAd,
   BannerAdSize,
-  TestIds,
 } from "react-native-google-mobile-ads";
 
 const AdBannerAndroid = () => {
-  const adUnitId = TestIds.ADAPTIVE_BANNER;
+  const adUnitId = "ca-app-pub-6810850129615089/2498028607";
   const bannerRef = useRef<BannerAd>(null);
 
   return (
