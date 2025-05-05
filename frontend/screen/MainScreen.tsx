@@ -26,7 +26,7 @@ export default function MainScreen({ route }: any) {
       paddingBottom: paddingBottom,
     },
     title: {
-      fontSize: 48,
+      fontSize: 32,
       fontWeight: "600",
       marginBottom: 8,
       paddingBottom: screenHeight / 30,
