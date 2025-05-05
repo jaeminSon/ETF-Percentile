@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, View, Text, Dimensions, StyleSheet } from "react-native";
+import { View, Text, Dimensions, StyleSheet } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 
 const ScreenWidth = Dimensions.get("window").width;
@@ -64,20 +64,18 @@ export default function LineGraph({ x, y, title, ylabel }: Props) {
   return (
     <View style={styles.inner}>
       <Text style={styles.title}>{title}</Text>
-      {Platform.OS === "web" && <Text style={styles.label}>{ylabel}</Text>}
-      {Platform.OS === "web" && (
-        <LineChart
-          data={data}
-          width={chartWidth}
-          height={chartHeight}
-          chartConfig={chartConfig}
-          fromZero={false}
-          withInnerLines={false}
-          withOuterLines={false}
-          withDots={false}
-          withShadow={false}
-        />
-      )}
+      <Text style={styles.label}>{ylabel}</Text>
+      <LineChart
+        data={data}
+        width={chartWidth}
+        height={chartHeight}
+        chartConfig={chartConfig}
+        fromZero={false}
+        withInnerLines={false}
+        withOuterLines={false}
+        withDots={false}
+        withShadow={false}
+      />
     </View>
   );
 }

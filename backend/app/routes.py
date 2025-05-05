@@ -42,6 +42,7 @@ def extract_data(
         }
     else:
         return {
+            "date": all_dates[-1:],
             "price_ratio_percentile": price_ratio_percentile,
             "volume_percentile": volume_percentile,
         }
