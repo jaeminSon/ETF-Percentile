@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, View, Text, Dimensions, StyleSheet } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import { fetchChartData } from "../api";
 import CustomGauger from "../component/Gauger";
 import LineGraph from "../component/LineChart";
@@ -35,14 +42,16 @@ export default function MainScreen({ route }: any) {
 
   return (
     <ScrollView style={{ backgroundColor: "white" }}>
-      <View>
-        <LineGraph
-          x={data.date}
-          y={data.price_ratio}
-          title={`${data.ticker} (${data.date[data.date.length - 1]})`}
-          ylabel={`Price / ${data.window}-MA`}
-        />
-      </View>
+      {Platform.OS === "web" && (
+        <View>
+          <LineGraph
+            x={data.date}
+            y={data.price_ratio}
+            title={`${data.ticker} (${data.date[data.date.length - 1]})`}
+            ylabel={`Price / ${data.window}-MA`}
+          />
+        </View>
+      )}
       <View>
         <CustomGauger
           leftColor="#00ee00"
