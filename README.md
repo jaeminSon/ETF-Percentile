@@ -1,14 +1,14 @@
 # Setting up
 ```
-# set up  backend server on 
+# Backend server
 $ cd backend
 $ pip install -r requirements.txt
 
-# set up frontend server
+# Frontend server
 $ cd frontend
 $ npm install
 
-# set up google cloud
+# Google cloud
 (LLM 의 high level plan 은 다음과 같았음)
 1. google cloud 가입 및 gcloud 설치
 2. google sql 생성
@@ -17,7 +17,7 @@ $ npm install
 5. cloudsql credential 생성
 6. 쿠버네티스 yaml 파일 적용
 
-# set up home server
+# Home server
 # portforwarding: router page 에서 세팅
 # Caddy for https on mac
 $ brew install caddy
@@ -33,13 +33,27 @@ $ gunicorn -w 4 -b 0.0.0.0:8000 wsgi:app
 $ cd frontend
 $ npx expo start --web
 $ npx expo start --android
+# native code integration 이 필요한 경우, build 후 실행해야함.
+$ npx expo run:android
 
 # run caddy for https
 $ sudo caddy run --config ./Caddyfile --adapter caddyfile
 
 # build android app
 $ npx expo prebuild --platform android
-$ npx expo run
+# metro.config.js 가 없는 경우, README 페이지 하단의 misc 의 예제를 참조하여 만들기
+$ npx react-native bundle \
+  --platform android \
+  --dev false \
+  --entry-file index.js \
+  --bundle-output android/app/src/main/assets/index.android.bundle \
+  --assets-dest android/app/src/main/res
+$ cd android
+$ ./gradlew assembleRelease
+$ adb install -r app/build/outputs/apk/release/app-release.apk
+
+# android app 내 폰에서 확인
+- app-release.apk 파일을 google drive 를 통해 옮겨 폰으로 다운받아서 설치 (카카오톡은 안됨).
 ```
 
 # Misc
@@ -52,3 +66,11 @@ export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
 export JAVA_HOME=$(/usr/libexec/java_home -v17)
 ```
+
+- metro.config.js 예시
+```
+const { getDefaultConfig } = require('expo/metro-config');
+const config = getDefaultConfig(__dirname);
+module.exports = config;
+```
+
