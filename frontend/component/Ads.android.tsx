@@ -1,8 +1,5 @@
 import { useRef } from "react";
-import {
-  BannerAd,
-  BannerAdSize,
-} from "react-native-google-mobile-ads";
+import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
 
 const AdBannerAndroid = () => {
   const adUnitId = "ca-app-pub-6810850129615089/2498028607";
