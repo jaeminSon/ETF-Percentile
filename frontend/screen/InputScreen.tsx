@@ -10,10 +10,11 @@ export default function InputScreen({ navigation }: any) {
   const [ticker, setTicker] = useState("SPY");
   const [itemsTicker, setItemsTicker] = useState([
     { label: "SPY", value: "SPY" },
+    { label: "SPXL", value: "SPXL" },
     { label: "QQQ", value: "QQQ" },
     { label: "TQQQ", value: "TQQQ" },
+    { label: "SOXX", value: "SOXX" },
     { label: "SOXL", value: "SOXL" },
-    { label: "SPXL", value: "SPXL" },
   ]);
 
   // Moving Average Window Size
@@ -83,6 +84,10 @@ export default function InputScreen({ navigation }: any) {
           zIndex={2000}
           zIndexInverse={2000}
           containerStyle={{ marginBottom: 20 }}
+          listMode="SCROLLVIEW"
+          dropDownContainerStyle={{
+            maxHeight: 300, // Change this value as needed
+          }}
         />
         <Text style={styles.label}>Moving Average Window (Days)</Text>
         <DropDownPicker

@@ -6,7 +6,7 @@ import pandas as pd
 import yfinance as yf
 
 
-ALL_TICKERS = ["SPY", "QQQ", "SPXL", "TQQQ", "SOXL"]
+ALL_TICKERS = ['SPY', 'SPXL', 'QQQ', 'TQQQ', 'SOXX', 'SOXL']
 
 
 def all_tickers():
