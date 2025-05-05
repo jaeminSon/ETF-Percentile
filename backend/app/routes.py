@@ -25,18 +25,26 @@ def percentile(values: List[float], index_target: int) -> float:
     return np.mean(np.array(values) < target_value) * 100
 
 
-def extract_data(d: Dict[str, List[object]], window: int) -> Dict[str, object]:
+def extract_data(
+    d: Dict[str, List[object]], window: int, return_series: bool = True
+) -> Dict[str, object]:
     all_dates = [e.strftime("%Y-%m-%d") for e in d["date"]]
     price_ratio = d[f"price_ratio_{window}ma"]
     price_ratio_percentile = percentile(price_ratio, len(all_dates) - 1)
     volume_percentile = percentile(d["volume"], len(all_dates) - 1)
 
-    return {
-        "date": all_dates,
-        "price_ratio": price_ratio,
-        "price_ratio_percentile": price_ratio_percentile,
-        "volume_percentile": volume_percentile,
-    }
+    if return_series:
+        return {
+            "date": all_dates,
+            "price_ratio": price_ratio,
+            "price_ratio_percentile": price_ratio_percentile,
+            "volume_percentile": volume_percentile,
+        }
+    else:
+        return {
+            "price_ratio_percentile": price_ratio_percentile,
+            "volume_percentile": volume_percentile,
+        }
 
 
 @lru_cache(maxsize=48)
@@ -48,6 +56,25 @@ def serve(ticker: str, window: int, today: date):
     res["ticker"] = ticker
     res["window"] = window
     return jsonify(res)
+
+
+@lru_cache(maxsize=48)
+def serve_percentile(ticker: str, window: int, today: date):
+    db_model = StockModels[ticker]
+    res_data = db_model.query.order_by(db_model.date.asc()).all()
+    d = res2dict(res_data)
+    res = extract_data(d, window, return_series=False)
+    res["ticker"] = ticker
+    res["window"] = window
+    return jsonify(res)
+
+
+@main.route("/percentile", methods=["GET"])
+def get_percentile():
+    ticker = request.args.get("ticker", type=str)
+    window = request.args.get("window", type=int)
+    today = date.today()
+    return serve_percentile(ticker, window, today)
 
 
 @main.route("/stocks", methods=["GET"])
@@ -63,6 +90,7 @@ def update_db():
     initialize_tables()
     update_database()
     serve.cache_clear()
+    serve_percentile.cache_clear()
     return "Database updated", 200
 
 
