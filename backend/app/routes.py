@@ -11,6 +11,11 @@ from .database import StockModels, initialize_tables, update_database
 
 main = Blueprint("main", __name__)
 
+home_ads = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+home_images = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "gauger", "image")
+)
+
 
 def res2dict(res: List[object]) -> Dict[str, List[object]]:
     d = defaultdict(list)
@@ -97,5 +102,9 @@ def update_db():
 
 @main.route("/ads.txt")
 def ads_txt():
-    home_ads = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
     return send_from_directory(home_ads, "ads.txt")
+
+
+@main.route("/image/<filename>")
+def serve_image(filename):
+    return send_from_directory(home_images, filename)
