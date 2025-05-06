@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { SafeAreaView, View, Text, Dimensions, StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  Linking,
+  Pressable,
+} from "react-native";
 import { Button } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import AdBanner from "../component/Ads";
@@ -49,6 +57,7 @@ export default function InputScreen({ navigation }: any) {
   const paddingHorizontal = screenWidth / 10;
   const paddingTop = screenHeight / 10;
   const paddingBottom = screenHeight / 5;
+  const paddinglinkTop = screenHeight / 20;
 
   const styles = StyleSheet.create({
     container: {
@@ -66,6 +75,15 @@ export default function InputScreen({ navigation }: any) {
       fontSize: 16,
       fontWeight: "600",
       marginBottom: 8,
+    },
+    linkContainer: {
+      marginTop: paddinglinkTop,
+      alignItems: "center",
+    },
+    linkText: {
+      fontSize: 14,
+      color: "blue",
+      textDecorationLine: "underline",
     },
   });
 
@@ -110,6 +128,20 @@ export default function InputScreen({ navigation }: any) {
         >
           Compute Percentile
         </Button>
+        <Pressable
+          onPress={() =>
+            Linking.openURL("https://jaemin-lab.ddns.net/explanation")
+          }
+          style={styles.linkContainer}
+        >
+          <Text style={styles.linkText}>How to Compute the Percentile</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => Linking.openURL("https://jaemin-lab.ddns.net/table")}
+          style={styles.linkContainer}
+        >
+          <Text style={styles.linkText}>Table View</Text>
+        </Pressable>
       </View>
       <AdBanner />
     </SafeAreaView>
