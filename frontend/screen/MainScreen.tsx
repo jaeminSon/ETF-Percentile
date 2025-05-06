@@ -16,7 +16,7 @@ import AdBanner from "../component/Ads";
 export default function MainScreen({ route }: any) {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
-  const paddingBottom = screenHeight / 5;
+  const paddingBottom = screenHeight / 10;
   const paddingLeft = screenWidth / 20;
 
   const styles = StyleSheet.create({
@@ -60,11 +60,11 @@ export default function MainScreen({ route }: any) {
           />
         </View>
       )}
-      {
+      {Platform.OS === "android" && (
         <Text
           style={styles.title}
         >{`${data.ticker} (${data.date[data.date.length - 1]})`}</Text>
-      }
+      )}
       <View>
         <CustomGauger
           leftColor="#00ee00"

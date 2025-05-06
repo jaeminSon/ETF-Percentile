@@ -10,11 +10,11 @@ export default function InputScreen({ navigation }: any) {
   const [ticker, setTicker] = useState("SPY");
   const [itemsTicker, setItemsTicker] = useState([
     { label: "SPY", value: "SPY" },
-    { label: "SPXL", value: "SPXL" },
+    { label: "SPXL (×3)", value: "SPXL" },
     { label: "QQQ", value: "QQQ" },
-    { label: "TQQQ", value: "TQQQ" },
+    { label: "TQQQ (×3)", value: "TQQQ" },
     { label: "SOXX", value: "SOXX" },
-    { label: "SOXL", value: "SOXL" },
+    { label: "SOXL (×3)", value: "SOXL" },
   ]);
 
   // Moving Average Window Size
