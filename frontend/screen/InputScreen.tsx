@@ -11,6 +11,7 @@ import {
 import { Button } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import AdBanner from "../component/Ads";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function InputScreen({ navigation }: any) {
   // Ticker
@@ -52,6 +53,14 @@ export default function InputScreen({ navigation }: any) {
     });
   };
 
+  const handleTableScreen = () => {
+    navigation.navigate("TableScreen", {});
+  };
+
+  const handleExplainScreen = () => {
+    navigation.navigate("ExplainScreen", {});
+  };
+
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
   const paddingHorizontal = screenWidth / 10;
@@ -84,6 +93,15 @@ export default function InputScreen({ navigation }: any) {
       fontSize: 14,
       color: "blue",
       textDecorationLine: "underline",
+    },
+    iconContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: paddinglinkTop,
+    },
+    iconWrapper: {
+      marginHorizontal: 16,
     },
   });
 
@@ -128,20 +146,16 @@ export default function InputScreen({ navigation }: any) {
         >
           Compute Percentile
         </Button>
-        <Pressable
-          onPress={() =>
-            Linking.openURL("https://jaemin-lab.ddns.net/explanation")
-          }
-          style={styles.linkContainer}
-        >
-          <Text style={styles.linkText}>How to Compute the Percentile</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => Linking.openURL("https://jaemin-lab.ddns.net/table")}
-          style={styles.linkContainer}
-        >
-          <Text style={styles.linkText}>Table View</Text>
-        </Pressable>
+
+        <View style={styles.iconContainer}>
+          <Pressable onPress={handleExplainScreen} style={styles.iconWrapper}>
+            <Ionicons name="information-circle-outline" size={32} />
+          </Pressable>
+
+          <Pressable onPress={handleTableScreen} style={styles.iconWrapper}>
+            <Ionicons name="grid-outline" size={32} />
+          </Pressable>
+        </View>
       </View>
       <AdBanner />
     </SafeAreaView>

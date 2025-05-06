@@ -117,7 +117,7 @@ export default function TableScreen() {
 }
 
 const screenHeight = Dimensions.get("window").height;
-const topMargin = screenHeight / 10;
+const topMargin = screenHeight / 20;
 
 const styles = StyleSheet.create({
   table: {
