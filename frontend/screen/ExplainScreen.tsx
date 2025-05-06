@@ -14,7 +14,7 @@ export default function ExplainScreen() {
     ScreenWidth > 600 ? ScreenWidth / 2 : (ScreenWidth * 9) / 10;
   const LeverageImageHeight = 9 * ImageWidth / 10;
   const SeriesImageHeight = ImageWidth / 2;
-  const PdfImageHeight = 9 * ImageWidth / 20;
+  const PdfImageHeight = 8 * ImageWidth / 10;
 
   const styles = StyleSheet.create({
     screen: {
