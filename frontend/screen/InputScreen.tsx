@@ -5,7 +5,6 @@ import {
   Text,
   Dimensions,
   StyleSheet,
-  Linking,
   Pressable,
 } from "react-native";
 import { Button } from "react-native-paper";
