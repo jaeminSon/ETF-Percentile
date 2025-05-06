@@ -57,20 +57,36 @@ $ adb install -r app/build/outputs/apk/release/app-release.apk
 ```
 
 # Misc
-```
-# gunicorn workers that waited too long dies and this is a feature.
-[2025-04-06 20:32:55 +0900] [22243] [ERROR] Error handling request (no URI read)
+- gunicorn workers that waited too long dies and this is a feature.
 
-# environment variables on Mac
+```
+[2025-04-06 20:32:55 +0900] [22243] [ERROR] Error handling request (no URI read)
+```
+
+- environment variables on Mac
+
+```
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
 export JAVA_HOME=$(/usr/libexec/java_home -v17)
 ```
 
 - metro.config.js 예시
+
 ```
 const { getDefaultConfig } = require('expo/metro-config');
 const config = getDefaultConfig(__dirname);
 module.exports = config;
+```
+
+- ## crontab 을 활용한 daily update
+
+```
+# crontab 열고, 내용 기입
+$ crontab -e
+<minute> <hour> * * * <path/to/shellscriptfile>
+
+# shell script 에 실행 권한 추가
+chmod +x <path/to/shellscriptfile>
 ```
 
