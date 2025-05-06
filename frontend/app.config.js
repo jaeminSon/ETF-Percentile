@@ -2,8 +2,8 @@ const withGoogleMobileAds = require("./with-google-mobile-ads");
 
 export default {
   expo: {
-    name: "Stock Gauge",
-    slug: "stock-gauge",
+    name: "ETF Percentile",
+    slug: "etf-percentile",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -16,13 +16,13 @@ export default {
     },
     plugins: [withGoogleMobileAds],
     android: {
-      package: "com.anonymous.stockgauge",
+      package: "com.jaeminson.etfpercentile",
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#ffffff",
       },
     },
-    ios: { bundleIdentifier: "com.anonymous.stockgauge", supportsTablet: true },
+    ios: { bundleIdentifier: "com.jaeminson.etfpercentile", supportsTablet: true },
     web: {
       favicon: "./assets/favicon.png",
     },
