@@ -23,7 +23,7 @@ $ npm install
 $ brew install caddy
 ```
 
-# Command
+# Server Command
 ```
 # initiate backend server
 $ cd backend
@@ -38,9 +38,14 @@ $ npx expo run:android
 
 # run caddy for https
 $ sudo caddy run --config ./Caddyfile --adapter caddyfile
+```
 
-# build android app
+# Android app build (apk 파일 생성)
+
+```
+# pre-build
 $ npx expo prebuild --platform android
+
 # metro.config.js 가 없는 경우, README 페이지 하단의 misc 의 예제를 참조하여 만들기
 $ npx react-native bundle \
   --platform android \
@@ -48,13 +53,40 @@ $ npx react-native bundle \
   --entry-file index.js \
   --bundle-output android/app/src/main/assets/index.android.bundle \
   --assets-dest android/app/src/main/res
+
+# apk 생성
 $ cd android
 $ ./gradlew assembleRelease
+
+# apk 설치
 $ adb install -r app/build/outputs/apk/release/app-release.apk
 
 # android app 내 폰에서 확인
 - app-release.apk 파일을 google drive 를 통해 옮겨 폰으로 다운받아서 설치 (카카오톡은 안됨).
 ```
+
+# App Store 에 업로드
+
+```
+$ npx expo export --platform android
+# eas 가입 필요 https://expo.dev/signup
+$ npx eas build -p android --profile production
+```
+
+- keytool 저장
+
+```
+$ keytool -genkeypair -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+```
+
+- android/gradle.properties 에 upload credential 추가
+```
+MYAPP_UPLOAD_STORE_FILE=my-release-key.keystore
+MYAPP_UPLOAD_KEY_ALIAS=my-key-alias
+MYAPP_UPLOAD_STORE_PASSWORD=*****
+MYAPP_UPLOAD_KEY_PASSWORD=*****
+```
+
 
 # Misc
 - gunicorn workers that waited too long dies and this is a feature.
@@ -79,7 +111,7 @@ const config = getDefaultConfig(__dirname);
 module.exports = config;
 ```
 
-- ## crontab 을 활용한 daily update
+- crontab 을 활용한 daily update
 
 ```
 # crontab 열고, 내용 기입
