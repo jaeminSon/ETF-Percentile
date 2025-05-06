@@ -7,9 +7,9 @@ RUN apt-get update && \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/jaeminSon/StockGauger.git
+RUN git clone https://github.com/jaeminSon/ETF-Percentile.git
 
-WORKDIR /app/StockGauger/backend
+WORKDIR /app/ETF-Percentile/backend
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8080
