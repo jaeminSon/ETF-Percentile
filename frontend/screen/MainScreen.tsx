@@ -6,6 +6,7 @@ import {
   Dimensions,
   StyleSheet,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { fetchChartData } from "../api";
 import CustomGauger from "../component/Gauger";
@@ -43,9 +44,7 @@ export default function MainScreen({ route }: any) {
   }, [ticker, window]);
 
   if (!data) {
-    return (
-      <Text style={{ textAlign: "center", marginTop: 50 }}>Loading...</Text>
-    );
+    return <ActivityIndicator style={{ marginTop: 50 }} />;
   }
 
   return (
