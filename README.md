@@ -65,8 +65,7 @@ $ adb install -r app/build/outputs/apk/release/app-release.apk
 - app-release.apk 파일을 google drive 를 통해 옮겨 폰으로 다운받아서 설치 (카카오톡은 안됨).
 ```
 
-# App Store 업로드를 위한 aab 파일 생성
-
+# App Store 업로드를 위한 aab 파일 생성 (using expo eas)
 - eas 가입  https://expo.dev/signup
 - eas.json 을 다음과 같이 작성
 
@@ -89,10 +88,16 @@ $ npx expo export --platform android
 $ npx eas build -p android --profile release
 ```
 
+# App Store 업로드를 위한 aab 파일 생성 (using gradle)
+```
+$ npx expo export --platform android
+```
+
 - keytool 저장
 
 ```
 $ keytool -genkeypair -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+$ mv my-release-key.keystore android/app
 ```
 
 - android/gradle.properties 에 upload credential 추가
