@@ -14,8 +14,8 @@
     "production": {
       "autoIncrement": true
     },
-    "android": {
-      "release": {
+    "release": {
+      "android": {
         "buildType": "app-bundle"
       }
     }

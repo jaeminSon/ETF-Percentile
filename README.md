@@ -73,8 +73,8 @@ $ adb install -r app/build/outputs/apk/release/app-release.apk
 ```
 {
   "build": {
-    "android": {
-      "release": {
+    "release": {
+      "android": {
         "buildType": "app-bundle"
       }
     }
