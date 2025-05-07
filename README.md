@@ -65,12 +65,28 @@ $ adb install -r app/build/outputs/apk/release/app-release.apk
 - app-release.apk 파일을 google drive 를 통해 옮겨 폰으로 다운받아서 설치 (카카오톡은 안됨).
 ```
 
-# App Store 에 업로드
+# App Store 업로드를 위한 aab 파일 생성
+
+- eas 가입  https://expo.dev/signup
+- eas.json 을 다음과 같이 작성
+
+```
+{
+  "build": {
+    "android": {
+      "release": {
+        "buildType": "app-bundle"
+      }
+    }
+  }
+}
+```
+
+- npx 명령어 실행
 
 ```
 $ npx expo export --platform android
-# eas 가입 필요 https://expo.dev/signup
-$ npx eas build -p android --profile production
+$ npx eas build -p android --profile release
 ```
 
 - keytool 저장
@@ -80,11 +96,43 @@ $ keytool -genkeypair -v -keystore my-release-key.keystore -alias my-key-alias -
 ```
 
 - android/gradle.properties 에 upload credential 추가
+
 ```
 MYAPP_UPLOAD_STORE_FILE=my-release-key.keystore
 MYAPP_UPLOAD_KEY_ALIAS=my-key-alias
 MYAPP_UPLOAD_STORE_PASSWORD=*****
 MYAPP_UPLOAD_KEY_PASSWORD=*****
+```
+
+- android/app/build.gradle 의 android 블락 안에 다음 추가
+
+```
+signingConfigs {
+    release {
+        storeFile file(MYAPP_UPLOAD_STORE_FILE)
+        storePassword MYAPP_UPLOAD_STORE_PASSWORD
+        keyAlias MYAPP_UPLOAD_KEY_ALIAS
+        keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+    }
+}
+
+buildTypes {
+    release {
+        signingConfig signingConfigs.release
+        shrinkResources true
+        minifyEnabled true
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+}
+```
+
+- aab 파일 생성 
+
+```
+$ cd android
+$ ./gradlew clean
+$ ./gradlew bundleRelease
+# android/app/build/outputs/bundle/release/app-release.aab 에 생성됨
 ```
 
 
