@@ -12,9 +12,9 @@ export default function ExplainScreen() {
   const ScreenWidth = Dimensions.get("window").width;
   const ImageWidth =
     ScreenWidth > 600 ? ScreenWidth / 2 : (ScreenWidth * 9) / 10;
-  const LeverageImageHeight = 9 * ImageWidth / 10;
+  const LeverageImageHeight = (9 * ImageWidth) / 10;
   const SeriesImageHeight = ImageWidth / 2;
-  const PdfImageHeight = 8 * ImageWidth / 10;
+  const PdfImageHeight = (8 * ImageWidth) / 10;
 
   const styles = StyleSheet.create({
     screen: {
@@ -32,15 +32,15 @@ export default function ExplainScreen() {
       marginVertical: 12,
     },
     pdfImage: {
-        width: ImageWidth,
-        height: PdfImageHeight,
-        marginVertical: 12,
-      },
+      width: ImageWidth,
+      height: PdfImageHeight,
+      marginVertical: 12,
+    },
     seriesImage: {
-        width: ImageWidth,
-        height: SeriesImageHeight,
-        marginVertical: 12,
-      },
+      width: ImageWidth,
+      height: SeriesImageHeight,
+      marginVertical: 12,
+    },
     title: {
       fontSize: 32,
       textAlign: "center",
