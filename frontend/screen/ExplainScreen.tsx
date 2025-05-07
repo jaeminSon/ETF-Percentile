@@ -55,6 +55,8 @@ export default function ExplainScreen() {
     },
   });
 
+  const hour = new Date().toISOString().slice(0, 13);
+
   return (
     <View style={styles.screen}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -66,7 +68,7 @@ export default function ExplainScreen() {
         </Text>
         <Image
           source={{
-            uri: "https://jaemin-lab.ddns.net/api/image/return_leverage.png",
+            uri: `https://jaemin-lab.ddns.net/api/image/return_leverage.png?ts=${hour}`,
           }}
           style={styles.leverageImage}
           resizeMode="contain"
@@ -79,7 +81,7 @@ export default function ExplainScreen() {
         </Text>
         <Image
           source={{
-            uri: "https://jaemin-lab.ddns.net/api/image/div_by_ma_SOXL.png",
+            uri: `https://jaemin-lab.ddns.net/api/image/div_by_ma_SOXL.png?ts=${hour}`,
           }}
           style={styles.seriesImage}
           resizeMode="contain"
@@ -90,7 +92,7 @@ export default function ExplainScreen() {
           position relative to historical values.
         </Text>
         <Image
-          source={{ uri: "https://jaemin-lab.ddns.net/api/image/pdf_SOXL.png" }}
+          source={{ uri: `https://jaemin-lab.ddns.net/api/image/pdf_SOXL.png?ts=${hour}` }}
           style={styles.pdfImage}
           resizeMode="contain"
         />
