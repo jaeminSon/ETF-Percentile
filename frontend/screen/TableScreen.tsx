@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
-  Dimensions,
 } from "react-native";
 import { fetchPercentileData } from "../api";
 
@@ -80,7 +79,7 @@ export default function TableScreen() {
   console.info(pivotedData);
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.screen}>
       <View style={styles.table}>
         {/* Header */}
         <View style={styles.row}>
@@ -98,16 +97,16 @@ export default function TableScreen() {
             <Text style={styles.cell}>{tickerOnTable(item.ticker)}</Text>
             <Text style={styles.cell}>{item.date}</Text>
             <Text style={[styles.cell, getPriceTextStyle(item.p20)]}>
-              {item.p20} %
+              {item.p20}%
             </Text>
             <Text style={[styles.cell, getPriceTextStyle(item.p50)]}>
-              {item.p50} %
+              {item.p50}%
             </Text>
             <Text style={[styles.cell, getPriceTextStyle(item.p100)]}>
-              {item.p100} %
+              {item.p100}%
             </Text>
             <Text style={[styles.cell, getPriceTextStyle(item.p200)]}>
-              {item.p200} %
+              {item.p200}%
             </Text>
           </View>
         ))}
@@ -116,12 +115,15 @@ export default function TableScreen() {
   );
 }
 
-const screenHeight = Dimensions.get("window").height;
-const topMargin = screenHeight / 20;
-
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
   table: {
-    margin: topMargin,
+    marginTop: 30,
+    marginLeft: 10,
+    marginRight: 10,
   },
   row: {
     flexDirection: "row",
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
-    padding: 10,
+    padding: 5,
     textAlign: "center",
   },
   header: {
