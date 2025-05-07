@@ -95,6 +95,7 @@ def plot_return_with_ma(
     ax2.set_xlabel("Date", color="black")
     ax2.set_ylabel("Volume", color="red")
 
+    ax1.set_title("Return and Volume of SPXL, TQQQ, SOXL")
     plt.tight_layout()
     plt.savefig(os.path.join(savedir, "return_leverage.png"))
 
@@ -153,6 +154,7 @@ def plot_mean_std(
                 label=column,
                 **{k: plot_kwargs[k][column] for k in plot_kwargs},
             )
+        ax.set_title("(Closing Price) / (100-day MA) of SOXL")
         plt.legend(loc="best")
         plt.savefig(path_savefile)
     elif isinstance(df, list) and isinstance(column_name, list):
@@ -238,8 +240,8 @@ def plot_pdf(
             color="red",
             linewidth=1,
         )
-        ax.set_title(f"Price divdeded by {window}MA for {ticker}")
-        ax.set_xlabel(f"Price / {window}MA")
+        ax.set_title(f"Distribution of {ticker}'s (Closing Price) / (100-day MA)")
+        ax.set_xlabel(f"(Closing Price) / ({window}-day MA)")
 
         plt.savefig(os.path.join(savedir, f"pdf_{ticker}.png"))
 
