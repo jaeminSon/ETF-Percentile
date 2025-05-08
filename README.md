@@ -8,6 +8,11 @@ $ pip install -r requirements.txt
 $ cd frontend
 $ npm install
 
+# Home server
+# portforwarding: router page 에서 세팅
+# Caddy for https on mac
+$ brew install caddy
+
 # Google cloud
 (LLM 의 high level plan 은 다음과 같았음)
 1. google cloud 가입 및 gcloud 설치
@@ -16,11 +21,6 @@ $ npm install
 4. kubernetes cluster 생성
 5. cloudsql credential 생성
 6. 쿠버네티스 yaml 파일 적용
-
-# Home server
-# portforwarding: router page 에서 세팅
-# Caddy for https on mac
-$ brew install caddy
 ```
 
 # Server Command
@@ -40,7 +40,7 @@ $ npx expo run:android
 $ sudo caddy run --config ./Caddyfile --adapter caddyfile
 ```
 
-# Android app build (apk 파일 생성)
+# apk 파일 생성 (실행 파일)
 
 ```
 # pre-build
@@ -65,32 +65,11 @@ $ adb install -r app/build/outputs/apk/release/app-release.apk
 - app-release.apk 파일을 google drive 를 통해 옮겨 폰으로 다운받아서 설치 (카카오톡은 안됨).
 ```
 
-# App Store 업로드를 위한 aab 파일 생성 (using expo eas)
-- eas 가입  https://expo.dev/signup
-- eas.json 을 다음과 같이 작성
+# abb 파일 생성 (구글 플레이 업로드)
 
 ```
-{
-  "build": {
-    "release": {
-      "android": {
-        "buildType": "app-bundle"
-      }
-    }
-  }
-}
-```
-
-- npx 명령어 실행
-
-```
-$ npx expo export --platform android
-$ npx eas build -p android --profile release
-```
-
-# App Store 업로드를 위한 aab 파일 생성 (using gradle)
-```
-$ npx expo export --platform android
+# pre-build
+$ npx expo prebuild --platform android
 ```
 
 - keytool 저장
@@ -129,6 +108,18 @@ buildTypes {
         proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
 }
+```
+
+- js bundle 생성
+
+```
+# metro.config.js 가 없는 경우, README 페이지 하단의 misc 의 예제를 참조하여 만들기
+$ npx react-native bundle \
+  --platform android \
+  --dev false \
+  --entry-file index.js \
+  --bundle-output android/app/src/main/assets/index.android.bundle \
+  --assets-dest android/app/src/main/res
 ```
 
 - aab 파일 생성 
@@ -175,3 +166,8 @@ $ crontab -e
 chmod +x <path/to/shellscriptfile>
 ```
 
+- emulator 에서 error log 보기
+
+```
+adb logcat "*:E"
+```
