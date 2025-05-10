@@ -8,6 +8,8 @@ import {
   Dimensions,
 } from "react-native";
 
+import AdBanner from "../component/Ads";
+
 export default function ExplainScreen() {
   const ScreenWidth = Dimensions.get("window").width;
   const ImageWidth =
@@ -101,6 +103,7 @@ export default function ExplainScreen() {
           current levels in context.
         </Text>
       </ScrollView>
+      <AdBanner />
     </View>
   );
 }

@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { fetchPercentileData } from "../api";
+import AdBanner from "../component/Ads";
 
 const getPriceTextStyle = (priceRatio: number) => {
   if (priceRatio > 80) return { color: "red" };
@@ -111,6 +112,7 @@ export default function TableScreen() {
           </View>
         ))}
       </View>
+      <AdBanner />
     </ScrollView>
   );
 }
