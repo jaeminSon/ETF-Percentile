@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import {
-  SafeAreaView,
+  ScrollView,
   View,
   Text,
   Dimensions,
   StyleSheet,
   Pressable,
+  Platform,
 } from "react-native";
 import { Button } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
-import AdBanner from "../component/Ads";
 import { Ionicons } from "@expo/vector-icons";
+import AdBanner from "../component/Ads";
+import ExplainScreen from "./ExplainScreen";
+import TableScreen from "./TableScreen";
 
 export default function InputScreen({ navigation }: any) {
   // Ticker
@@ -102,10 +105,18 @@ export default function InputScreen({ navigation }: any) {
     iconWrapper: {
       marginHorizontal: 16,
     },
+    tableTitle: {
+      fontSize: 32,
+      fontWeight: "600",
+      marginBottom: 8,
+      paddingTop: screenHeight / 20,
+      marginRight: 10,
+      textAlign: "center",
+    },
   });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.label}>Ticker</Text>
         <DropDownPicker
@@ -146,17 +157,35 @@ export default function InputScreen({ navigation }: any) {
           Compute Percentile
         </Button>
 
-        <View style={styles.iconContainer}>
-          <Pressable onPress={handleExplainScreen} style={styles.iconWrapper}>
-            <Ionicons name="information-circle-outline" size={32} />
-          </Pressable>
+        {Platform.OS === "android" && (
+          <View style={styles.iconContainer}>
+            <Pressable onPress={handleExplainScreen} style={styles.iconWrapper}>
+              <Ionicons name="information-circle-outline" size={32} />
+            </Pressable>
 
-          <Pressable onPress={handleTableScreen} style={styles.iconWrapper}>
-            <Ionicons name="grid-outline" size={32} />
-          </Pressable>
-        </View>
+            <Pressable onPress={handleTableScreen} style={styles.iconWrapper}>
+              <Ionicons name="grid-outline" size={32} />
+            </Pressable>
+          </View>
+        )}
+
+        {Platform.OS === "web" && <AdBanner />}
+
+        {Platform.OS === "web" && (
+          <Text style={styles.tableTitle}>Tabular View</Text>
+        )}
+        {Platform.OS === "web" && (
+          <View>
+            <TableScreen />
+          </View>
+        )}
+        {Platform.OS === "web" && (
+          <View>
+            <ExplainScreen />
+          </View>
+        )}
       </View>
-      <AdBanner />
-    </SafeAreaView>
+      {Platform.OS === "android" && <AdBanner />}
+    </ScrollView>
   );
 }
