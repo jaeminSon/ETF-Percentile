@@ -9,11 +9,15 @@ import {
 } from "react-native";
 
 import AdBanner from "../component/Ads";
+import CustomBack from "../component/BackButton";
 
 export default function ExplainScreen() {
-  const ScreenWidth = Dimensions.get("window").width;
+  const screenWidth = Dimensions.get("window").width;
+  const screenHeight = Dimensions.get("window").height;
+  const paddingBottom = screenHeight / 10;
+  const paddingLeft = screenWidth / 20;
   const ImageWidth =
-    ScreenWidth > 600 ? ScreenWidth / 2 : (ScreenWidth * 9) / 10;
+    screenWidth > 600 ? screenWidth / 2 : (screenWidth * 9) / 10;
   const LeverageImageHeight = (9 * ImageWidth) / 10;
   const SeriesImageHeight = ImageWidth / 2;
   const PdfImageHeight = (8 * ImageWidth) / 10;
@@ -55,6 +59,11 @@ export default function ExplainScreen() {
       marginVertical: 8,
       width: "80%",
     },
+    button: {
+      flex: 1,
+      padding: paddingLeft,
+      paddingBottom: paddingBottom,
+    },
   });
 
   const hour = new Date().toISOString().slice(0, 13);
@@ -94,7 +103,9 @@ export default function ExplainScreen() {
           position relative to historical values.
         </Text>
         <Image
-          source={{ uri: `https://jaemin-lab.ddns.net/api/image/pdf_SOXL.png?ts=${hour}` }}
+          source={{
+            uri: `https://jaemin-lab.ddns.net/api/image/pdf_SOXL.png?ts=${hour}`,
+          }}
           style={styles.pdfImage}
           resizeMode="contain"
         />
@@ -103,6 +114,9 @@ export default function ExplainScreen() {
           current levels in context.
         </Text>
       </ScrollView>
+      <View style={styles.button}>
+        <CustomBack />
+      </View>
       <AdBanner />
     </View>
   );

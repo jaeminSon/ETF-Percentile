@@ -5,9 +5,11 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import { fetchPercentileData } from "../api";
 import AdBanner from "../component/Ads";
+import CustomBack from "../component/BackButton";
 
 const getPriceTextStyle = (priceRatio: number) => {
   if (priceRatio > 80) return { color: "red" };
@@ -129,11 +131,18 @@ export default function TableScreen() {
           </View>
         ))}
       </View>
+      <View style={styles.button}>
+        <CustomBack />
+      </View>
       <AdBanner />
     </ScrollView>
   );
 }
 
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
+const paddingBottom = screenHeight / 10;
+const paddingLeft = screenWidth / 20;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -163,5 +172,10 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "600",
     textAlign: "center",
+  },
+  button: {
+    flex: 1,
+    padding: paddingLeft,
+    paddingBottom: paddingBottom,
   },
 });
