@@ -139,7 +139,7 @@ export default function InputScreen({ navigation }: any) {
           containerStyle={{ marginBottom: 20 }}
           listMode="SCROLLVIEW"
           dropDownContainerStyle={{
-            maxHeight: 3000, // Change this value as needed
+            maxHeight: 400, // Change this value as needed
           }}
         />
         <Text style={styles.label}>Moving Average Window (Days)</Text>
