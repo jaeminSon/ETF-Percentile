@@ -26,11 +26,8 @@ export default function ExplainScreen() {
     screen: {
       flex: 1,
       backgroundColor: "#FFFFFF",
-    },
-    container: {
-      padding: 16,
       alignItems: "center",
-      backgroundColor: "#FFFFFF",
+      padding: 16,
     },
     leverageImage: {
       width: ImageWidth,
@@ -69,7 +66,7 @@ export default function ExplainScreen() {
   const hour = new Date().toISOString().slice(0, 13);
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.container}>
+    <ScrollView style={styles.screen}>
       <Text style={styles.title}>How to Compute Percentile</Text>
       <Text style={styles.paragraph}>
         The following chart shows the returns and trading volumes of SPXL, TQQQ,
