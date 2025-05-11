@@ -2,7 +2,6 @@ import os
 from typing import List, Dict
 from collections import defaultdict
 from functools import lru_cache
-from datetime import date
 
 import numpy as np
 from flask import Blueprint, request, jsonify, send_from_directory
@@ -54,7 +53,7 @@ def extract_data(
 
 
 @lru_cache(maxsize=52)
-def serve(ticker: str, window: int, today: date):
+def serve(ticker: str, window: int):
     db_model = StockModels[ticker]
     res_data = db_model.query.order_by(db_model.date.asc()).all()
     d = res2dict(res_data)
@@ -65,7 +64,7 @@ def serve(ticker: str, window: int, today: date):
 
 
 @lru_cache(maxsize=52)
-def serve_percentile(ticker: str, window: int, today: date):
+def serve_percentile(ticker: str, window: int):
     db_model = StockModels[ticker]
     res_data = db_model.query.order_by(db_model.date.asc()).all()
     d = res2dict(res_data)
@@ -79,16 +78,14 @@ def serve_percentile(ticker: str, window: int, today: date):
 def get_percentile():
     ticker = request.args.get("ticker", type=str)
     window = request.args.get("window", type=int)
-    today = date.today()
-    return serve_percentile(ticker, window, today)
+    return serve_percentile(ticker, window)
 
 
 @main.route("/stocks", methods=["GET"])
 def get_stocks():
     ticker = request.args.get("ticker", type=str)
     window = request.args.get("window", type=int)
-    today = date.today()
-    return serve(ticker, window, today)
+    return serve(ticker, window)
 
 
 @main.route("/update-database", methods=["POST"])
