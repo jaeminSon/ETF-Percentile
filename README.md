@@ -187,3 +187,9 @@ defaultConfig {
     ...
 }
 ```
+
+- Android emulator 에서 삭제
+
+```
+adb uninstall com.<str>.<str>
+```
