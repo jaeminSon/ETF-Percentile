@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   Dimensions,
+  Platform,
 } from "react-native";
 
 import AdBanner from "../component/Ads";
@@ -60,7 +61,7 @@ export default function ExplainScreen() {
       width: "80%",
     },
     button: {
-      width: '90%',
+      width: "90%",
       flex: 1,
       padding: paddingLeft,
       paddingBottom: paddingBottom,
@@ -113,9 +114,11 @@ export default function ExplainScreen() {
         For trading volume, we simply compute the percentile to evaluate current
         levels in context.
       </Text>
-      <View style={styles.button}>
-        <CustomBack />
-      </View>
+      {Platform.OS === "android" && (
+        <View style={styles.button}>
+          <CustomBack />
+        </View>
+      )}
       <AdBanner />
     </ScrollView>
   );

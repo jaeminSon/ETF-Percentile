@@ -6,6 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Dimensions,
+  Platform,
 } from "react-native";
 import { fetchPercentileData } from "../api";
 import AdBanner from "../component/Ads";
@@ -131,9 +132,11 @@ export default function TableScreen() {
           </View>
         ))}
       </View>
-      <View style={styles.button}>
-        <CustomBack />
-      </View>
+      {Platform.OS === "android" && (
+        <View style={styles.button}>
+          <CustomBack />
+        </View>
+      )}
       <AdBanner />
     </ScrollView>
   );
