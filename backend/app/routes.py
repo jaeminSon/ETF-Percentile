@@ -53,7 +53,7 @@ def extract_data(
         }
 
 
-@lru_cache(maxsize=24)
+@lru_cache(maxsize=52)
 def serve(ticker: str, window: int, today: date):
     db_model = StockModels[ticker]
     res_data = db_model.query.order_by(db_model.date.asc()).all()
@@ -64,7 +64,7 @@ def serve(ticker: str, window: int, today: date):
     return jsonify(res)
 
 
-@lru_cache(maxsize=24)
+@lru_cache(maxsize=52)
 def serve_percentile(ticker: str, window: int, today: date):
     db_model = StockModels[ticker]
     res_data = db_model.query.order_by(db_model.date.asc()).all()

@@ -18,14 +18,31 @@ const getPriceTextStyle = (priceRatio: number) => {
 };
 
 const tickerOnTable = (ticker: string) => {
-  const adjustedTicker = ["SPXL", "TQQQ", "SOXL"].includes(ticker)
-    ? `${ticker} (×3)`
-    : ticker;
-  return adjustedTicker;
+  if (["SPXL", "TQQQ", "SOXL"].includes(ticker)) {
+    return `${ticker} (×3)`;
+  } else if (["TSLL", "NVDL", "CONL"].includes(ticker)) {
+    return `${ticker} (×2)`;
+  } else {
+    return ticker;
+  }
 };
 
 export default function TableScreen() {
-  const tickers = ["SPY", "SPXL", "QQQ", "TQQQ", "SOXX", "SOXL"];
+  const tickers = [
+    "SPY",
+    "SPXL",
+    "QQQ",
+    "TQQQ",
+    "SOXX",
+    "SOXL",
+    "TSLA",
+    "TSLL",
+    "NVDA",
+    "NVDL",
+    "GLD",
+    "TLT",
+    "CONL",
+  ];
   const windows = [20, 50, 100, 200];
 
   const [data, setData] = useState<any[]>([]);

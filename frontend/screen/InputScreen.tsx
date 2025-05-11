@@ -26,6 +26,13 @@ export default function InputScreen({ navigation }: any) {
     { label: "TQQQ (×3)", value: "TQQQ" },
     { label: "SOXX", value: "SOXX" },
     { label: "SOXL (×3)", value: "SOXL" },
+    { label: "TSLA", value: "TSLA" },
+    { label: "TSLL (×2)", value: "TSLL" },
+    { label: "NVDA", value: "NVDA" },
+    { label: "NVDL (×2)", value: "NVDL" },
+    { label: "GLD", value: "GLD" },
+    { label: "TLT", value: "TLT" },
+    { label: "CONL (×2)", value: "CONL" },
   ]);
 
   // Moving Average Window Size
@@ -109,7 +116,7 @@ export default function InputScreen({ navigation }: any) {
       fontSize: 32,
       fontWeight: "600",
       marginBottom: 8,
-      paddingTop: screenHeight / 20,
+      paddingTop: screenHeight / 10,
       marginRight: 10,
       textAlign: "center",
     },
@@ -132,7 +139,7 @@ export default function InputScreen({ navigation }: any) {
           containerStyle={{ marginBottom: 20 }}
           listMode="SCROLLVIEW"
           dropDownContainerStyle={{
-            maxHeight: 300, // Change this value as needed
+            maxHeight: 3000, // Change this value as needed
           }}
         />
         <Text style={styles.label}>Moving Average Window (Days)</Text>
