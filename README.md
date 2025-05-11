@@ -88,6 +88,12 @@ MYAPP_UPLOAD_STORE_PASSWORD=*****
 MYAPP_UPLOAD_KEY_PASSWORD=*****
 ```
 
+- android/gradle.properties 에 fabric / New architecture 사용 안함을 명시
+
+```
+newArchEnabled=false
+```
+
 - android/app/build.gradle 의 android 블락 안에 다음 추가
 
 ```
@@ -170,4 +176,14 @@ chmod +x <path/to/shellscriptfile>
 
 ```
 adb logcat "*:E"
+```
+
+- aab file 생성시 version code 를 android/app/build.gradle 에서 변경해야함
+
+```
+defaultConfig {
+    ...
+    versionCode 2       // <--- Increase this (must be an integer and unique)
+    ...
+}
 ```
