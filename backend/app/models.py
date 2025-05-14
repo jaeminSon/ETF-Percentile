@@ -21,7 +21,7 @@ class Stock(db.Model):
     price_ratio_50ma = db.Column(db.Float, nullable=True)
     price_ratio_100ma = db.Column(db.Float, nullable=True)
     price_ratio_200ma = db.Column(db.Float, nullable=True)
-    volume = db.Column(db.Integer, nullable=True)
+    volume = db.Column(db.Float, nullable=True)
 
     @declared_attr
     def __table_args__(cls):
