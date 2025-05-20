@@ -13,6 +13,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { Ionicons } from "@expo/vector-icons";
 import AdBanner from "../component/Ads";
 import ExplainScreen from "./ExplainScreen";
+import KoFiWidget from "../component/kofi";
 import TableScreen from "./TableScreen";
 
 export default function InputScreen({ navigation }: any) {
@@ -176,8 +177,6 @@ export default function InputScreen({ navigation }: any) {
           </View>
         )}
 
-        {Platform.OS === "web" && <AdBanner />}
-
         {Platform.OS === "web" && (
           <Text style={styles.tableTitle}>Tabular View</Text>
         )}
@@ -193,6 +192,7 @@ export default function InputScreen({ navigation }: any) {
         )}
       </View>
       {Platform.OS === "android" && <AdBanner />}
+      {Platform.OS === "web" && <KoFiWidget />}
     </ScrollView>
   );
 }
