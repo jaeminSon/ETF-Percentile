@@ -1,5 +1,7 @@
 # update daily
-curl -X POST localhost:8000/update-database
+while ! curl -X POST -s -o /dev/null -w "%{http_code}" localhost:8000/update-database | grep -q "200"; do 
+   echo "Request failed, retrying in 1 second..."; sleep 1; 
+done
 
 # compute percentile for caching
 for t in SPY SPXL QQQ TQQQ SOXX SOXL TSLA TSLL NVDA NVDL GLD TLT CONL; do
