@@ -97,9 +97,9 @@ def update_db():
     return "Database updated", 200
 
 
-@main.route("/ads.txt")
+@main.route("/app-ads.txt")
 def ads_txt():
-    return send_from_directory(home_ads, "ads.txt")
+    return send_from_directory(home_ads, "app-ads.txt")
 
 
 @main.route("/image/<filename>")
