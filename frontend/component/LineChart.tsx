@@ -21,7 +21,7 @@ export default function LineGraph({ x, y, title, ylabel }: Props) {
         ? v.toString().slice(0, 7)
         : "",
     ),
-    datasets: [{ data: y }],
+    datasets: [{ data: y, strokeWidth: 1 }],
   };
 
   const chartConfig = {
