@@ -75,7 +75,7 @@ export default function InputScreen({ navigation }: any) {
   const screenHeight = Dimensions.get("window").height;
   const paddingHorizontal = screenWidth / 10;
   const paddingTop = screenHeight / 10;
-  const paddingBottom = screenHeight / 5;
+  const paddingBottom = screenHeight / 3;
   const paddinglinkTop = screenHeight / 20;
 
   const styles = StyleSheet.create({
