@@ -72,7 +72,7 @@ def percent_change(yf_df: pd.DataFrame, key="Close", periods=1) -> pd.DataFrame:
 
 def yf_return(yf_df: pd.DataFrame, key="Close") -> pd.DataFrame:
     pct_ch = percent_change(yf_df, key)
-    return (pct_ch + 1).cumprod()
+    return (pct_ch + 1).cumprod() - 1
 
 
 def expected_return_from_pct_ch(pct_ch: pd.DataFrame) -> np.ndarray:
