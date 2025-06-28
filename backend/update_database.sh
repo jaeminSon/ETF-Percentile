@@ -4,7 +4,7 @@ while ! curl -X POST -s -o /dev/null -w "%{http_code}" localhost:8000/update-dat
 done
 
 # compute percentile for caching
-for t in SPY SPXL QQQ TQQQ SOXX SOXL TSLA TSLL NVDA NVDL GLD TLT CONL; do
+for t in SPY SPXL QQQ TQQQ IWM TNA DIA DDM TLT TMF IEF GLD SLV SMH SOXL BITX VNQ IBB KBE XLY XLP XLE XLF FAS XLV XLI XLB XME XOP OIH XRT XTL XLK XLU DBC PFF ITB; do
    for w in 20 50 100 200; do
 	curl "localhost:8000/percentile?ticker=${t}&window=${w}"
    done
