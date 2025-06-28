@@ -1,3 +1,5 @@
+import json
+import os
 from typing import Optional, Tuple
 from datetime import datetime, timedelta
 
@@ -6,21 +8,51 @@ import pandas as pd
 import yfinance as yf
 
 
-ALL_TICKERS = [
-    "SPY",
-    "SPXL",
-    "QQQ",
-    "TQQQ",
-    "SOXX",
-    "SOXL",
-    "TSLA",
-    "TSLL",
-    "NVDA",
-    "NVDL",
-    "GLD",
-    "TLT",
-    "CONL",
-]
+def load_tickers_from_json(json_file_path: str) -> list:
+    """Load ticker symbols from a JSON file.
+
+    Args:
+        json_file_path: Path to the JSON file containing ticker data
+
+    Returns:
+        List of ticker symbols (first element of each inner array)
+    """
+    try:
+        with open(json_file_path, "r") as f:
+            data = json.load(f)
+        # Extract ticker symbols (first element of each inner array)
+        tickers = [item[0] for item in data]
+        return tickers
+    except FileNotFoundError:
+        print(f"Warning: {json_file_path} not found. Using empty list.")
+        return []
+    except Exception as e:
+        print(f"Error reading {json_file_path}: {e}. Using empty list.")
+        return []
+
+
+def get_all_tickers() -> list:
+    # Get the absolute path of the current directory
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    index_tickers = load_tickers_from_json(os.path.join(current_dir, "index.json"))
+    stock_tickers = load_tickers_from_json(os.path.join(current_dir, "stock.json"))
+    sectors_tickers = load_tickers_from_json(os.path.join(current_dir, "sectors.json"))
+
+    # Combine and remove duplicates while preserving order
+    all_tickers = []
+    seen = set()
+
+    for ticker in index_tickers + sectors_tickers + stock_tickers:
+        if ticker not in seen:
+            all_tickers.append(ticker)
+            seen.add(ticker)
+
+    return all_tickers
+
+
+# Load tickers from JSON files
+ALL_TICKERS = get_all_tickers()
 
 
 def all_tickers():
@@ -77,3 +109,12 @@ def yf_return(yf_df: pd.DataFrame, key="Close") -> pd.DataFrame:
 
 def expected_return_from_pct_ch(pct_ch: pd.DataFrame) -> np.ndarray:
     return np.array(pct_ch).mean(axis=0)
+
+
+def sort_etf_json(path_json: str, index_element: int, path_save: str):
+    with open(path_json) as f:
+        data = json.load(f)
+    sorted_data = sorted(data, key=lambda x: x[index_element])
+
+    with open(path_save, "w", encoding="utf-8") as f:
+        json.dump(sorted_data, f, indent=2, ensure_ascii=False)
