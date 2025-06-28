@@ -52,7 +52,7 @@ def save_to_database(stock_data: Dict[str, pd.DataFrame]) -> None:
                 price_ratio_50ma=row["price_ratio_50ma"],
                 price_ratio_100ma=row["price_ratio_100ma"],
                 price_ratio_200ma=row["price_ratio_200ma"],
-                volume=math.log(row["volume"]),
+                volume=math.log(max(1, row["volume"])),
             )
             objects.append(obj)
 
