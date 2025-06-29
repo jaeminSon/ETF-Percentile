@@ -11,7 +11,7 @@ import AdBanner from "../component/Ads";
 import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
-export default function TableScreen() {
+export default function DefensiveAssetScreen() {
   const tickers_defensive_asset = ["TLT", "TMF", "GLD", "SLV", "XLF", "FAS"];
   const [refreshing, setRefreshing] = useState(false);
 

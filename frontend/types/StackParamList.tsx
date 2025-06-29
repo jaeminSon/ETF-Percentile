@@ -3,5 +3,6 @@ export type StackParamList = {
   InputScreen: undefined;
   GaugeScreen: { ticker: string; window: number };
   ExplainScreen: undefined;
-  TableScreen: undefined;
+  TechScreen: undefined;
+  DefensiveAssetScreen: undefined;
 };

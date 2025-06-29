@@ -11,7 +11,7 @@ import AdBanner from "../component/Ads";
 import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
-export default function TableScreen() {
+export default function TechScreen() {
   const tickers_tech = [
     "SMH",
     "SOXL",

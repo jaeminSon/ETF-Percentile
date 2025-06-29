@@ -20,12 +20,20 @@ import InputScreen from "./InputScreen";
 export default function LandingScreen({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);
 
-  const handleTableScreen = () => {
-    navigation.navigate("TableScreen", {});
+  const handleInputScreen = () => {
+    navigation.navigate("InputScreen", {});
   };
 
   const handleExplainScreen = () => {
     navigation.navigate("ExplainScreen", {});
+  };
+
+  const handleTechScreen = () => {
+    navigation.navigate("TechScreen", {});
+  };
+
+  const handleDefensiveAssetScreen = () => {
+    navigation.navigate("DefensiveAssetScreen", {});
   };
 
   const handleAndroidDownload = () => {
@@ -104,9 +112,17 @@ export default function LandingScreen({ navigation }: any) {
           <Pressable onPress={handleExplainScreen} style={styles.iconWrapper}>
             <Ionicons name="information-circle-outline" size={32} />
           </Pressable>
-
-          <Pressable onPress={handleTableScreen} style={styles.iconWrapper}>
-            <Ionicons name="grid-outline" size={32} />
+          <Pressable onPress={handleTechScreen} style={styles.iconWrapper}>
+            <Ionicons name="rocket-outline" size={32} />
+          </Pressable>
+          <Pressable
+            onPress={handleDefensiveAssetScreen}
+            style={styles.iconWrapper}
+          >
+            <Ionicons name="logo-usd" size={32} />
+          </Pressable>
+          <Pressable onPress={handleInputScreen} style={styles.iconWrapper}>
+            <Ionicons name="calculator-outline" size={32} />
           </Pressable>
         </View>
       )}

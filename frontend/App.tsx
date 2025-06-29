@@ -6,6 +6,8 @@ import InputScreen from "./screen/InputScreen";
 import GaugeScreen from "./screen/GaugeScreen";
 import ExplainScreen from "./screen/ExplainScreen";
 import IndexETFScreen from "./screen/IndexETFScreen";
+import TechScreen from "./screen/TechScreen";
+import DefensiveAssetScreen from "./screen/DefensiveAssetScreen";
 import { StackParamList } from "./types/StackParamList";
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -17,7 +19,8 @@ const linking = {
       LandingScreen: "",
       InputScreen: "input",
       GaugeScreen: "gauge/:ticker/:window",
-      TableScreen: "table",
+      TechScreen: "tech",
+      DefensiveAssetScreen: "defensive",
       ExplainScreen: "explain",
     },
   },
@@ -48,8 +51,13 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="TableScreen"
-          component={IndexETFScreen}
+          name="TechScreen"
+          component={TechScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DefensiveAssetScreen"
+          component={DefensiveAssetScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
