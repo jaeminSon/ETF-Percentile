@@ -1,6 +1,7 @@
 export type StackParamList = {
+  LandingScreen: undefined;
   InputScreen: undefined;
-  MainScreen: { ticker: string; window: string };
+  GaugeScreen: { ticker: string; window: string };
   ExplainScreen: undefined;
   TableScreen: undefined;
 };
