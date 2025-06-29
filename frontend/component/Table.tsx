@@ -179,7 +179,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     backgroundColor: "#f0f0f0",
     textAlign: "center",
-    alignItems: "center",
   },
   tableTitle: {
     fontSize: 32,

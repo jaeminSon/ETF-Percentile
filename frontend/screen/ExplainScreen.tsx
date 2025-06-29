@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import {
   ScrollView,
   View,
@@ -7,12 +7,27 @@ import {
   StyleSheet,
   Dimensions,
   Platform,
+  RefreshControl,
 } from "react-native";
 
 import AdBanner from "../component/Ads";
 import CustomBack from "../component/BackButton";
 
 export default function ExplainScreen() {
+  const [refreshing, setRefreshing] = useState(false);
+  const [timestamp, setTimestamp] = useState(
+    new Date().toISOString().slice(0, 13),
+  );
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    // Update timestamp to current hour (granular hourly update like original)
+    setTimestamp(new Date().toISOString().slice(0, 13));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
   const paddingBottom = screenHeight / 10;
@@ -26,9 +41,12 @@ export default function ExplainScreen() {
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
+      backgroundColor: "#FFFFFF",
+    },
+    contentContainer: {
+      flex: 1,
       padding: 16,
       alignItems: "center",
-      backgroundColor: "#FFFFFF",
     },
     leverageImage: {
       width: ImageWidth,
@@ -65,10 +83,19 @@ export default function ExplainScreen() {
     },
   });
 
-  const hour = new Date().toISOString().slice(0, 13);
-
   return (
-    <View style={styles.screen}>
+    <ScrollView
+      style={styles.screen}
+      contentContainerStyle={styles.contentContainer}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={["#0000ff"]} // Android
+          tintColor="#0000ff" // iOS
+        />
+      }
+    >
       <Text style={styles.title}>How to Compute Percentile</Text>
       <Text style={styles.paragraph}>
         The following chart shows the returns and trading volumes of SPXL, TQQQ,
@@ -77,7 +104,7 @@ export default function ExplainScreen() {
       </Text>
       <Image
         source={{
-          uri: `https://jaemin-lab.ddns.net/api/image/return_leverage.png?ts=${hour}`,
+          uri: `https://jaemin-lab.ddns.net/api/image/return_leverage.png?ts=${timestamp}`,
         }}
         style={styles.leverageImage}
         resizeMode="contain"
@@ -90,7 +117,7 @@ export default function ExplainScreen() {
       </Text>
       <Image
         source={{
-          uri: `https://jaemin-lab.ddns.net/api/image/div_by_ma_SOXL.png?ts=${hour}`,
+          uri: `https://jaemin-lab.ddns.net/api/image/div_by_ma_SOXL.png?ts=${timestamp}`,
         }}
         style={styles.seriesImage}
         resizeMode="contain"
@@ -102,7 +129,7 @@ export default function ExplainScreen() {
       </Text>
       <Image
         source={{
-          uri: `https://jaemin-lab.ddns.net/api/image/pdf_SOXL.png?ts=${hour}`,
+          uri: `https://jaemin-lab.ddns.net/api/image/pdf_SOXL.png?ts=${timestamp}`,
         }}
         style={styles.pdfImage}
         resizeMode="contain"
@@ -117,6 +144,6 @@ export default function ExplainScreen() {
         </View>
       )}
       <AdBanner />
-    </View>
+    </ScrollView>
   );
 }

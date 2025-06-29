@@ -27,7 +27,7 @@ export default function LineGraph({ x, y, title, ylabel }: Props) {
   const chartConfig = {
     backgroundGradientFrom: "#fff",
     backgroundGradientTo: "#fff",
-    color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`,
+    color: (opacity = 1) => `rgba(0, 100, 255, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     decimalPlaces: 2,
     propsForLabels: {

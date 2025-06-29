@@ -5,7 +5,7 @@ import LandingScreen from "./screen/LandingScreen";
 import InputScreen from "./screen/InputScreen";
 import GaugeScreen from "./screen/GaugeScreen";
 import ExplainScreen from "./screen/ExplainScreen";
-import TableScreen from "./screen/TableScreen";
+import IndexETFScreen from "./screen/IndexETFScreen";
 import { StackParamList } from "./types/StackParamList";
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -49,7 +49,7 @@ export default function App() {
         />
         <Stack.Screen
           name="TableScreen"
-          component={TableScreen}
+          component={IndexETFScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

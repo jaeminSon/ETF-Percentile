@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { fetchChartData } from "../api";
 import CustomGauger from "../component/Gauger";
@@ -38,9 +39,21 @@ export default function GaugeScreen({ route }: any) {
 
   const { ticker, window } = route.params;
   const [data, setData] = useState<any>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchData = async () => {
+    const result = await fetchChartData(ticker, window);
+    setData(result);
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchData();
+    setRefreshing(false);
+  };
 
   useEffect(() => {
-    fetchChartData(ticker, window).then(setData);
+    fetchData();
   }, [ticker, window]);
 
   if (!data) {
@@ -48,7 +61,17 @@ export default function GaugeScreen({ route }: any) {
   }
 
   return (
-    <ScrollView style={{ backgroundColor: "white" }}>
+    <ScrollView
+      style={{ backgroundColor: "white" }}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={["#0000ff"]} // Android
+          tintColor="#0000ff" // iOS
+        />
+      }
+    >
       {Platform.OS === "web" && (
         <View>
           <LineGraph

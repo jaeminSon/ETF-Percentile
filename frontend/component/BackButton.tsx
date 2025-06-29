@@ -4,13 +4,13 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StackParamList } from "../types/StackParamList";
 
 const CustomBack = () => {
-  type NavigationProp = NativeStackNavigationProp<StackParamList, "MainScreen">;
+  type NavigationProp = NativeStackNavigationProp<StackParamList>;
   const navigation = useNavigation<NavigationProp>();
 
   return (
     <Button
       mode="contained"
-      onPress={() => navigation.navigate("InputScreen")}
+      onPress={() => navigation.goBack()}
       style={{ marginTop: 30 }}
     >
       ← Back

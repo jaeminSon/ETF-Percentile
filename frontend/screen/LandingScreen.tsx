@@ -2,67 +2,23 @@ import React, { useState } from "react";
 import {
   ScrollView,
   View,
-  Text,
   Dimensions,
   StyleSheet,
   Pressable,
   Platform,
+  RefreshControl,
+  Linking,
+  Text,
 } from "react-native";
-import { Button } from "react-native-paper";
-import DropDownPicker from "react-native-dropdown-picker";
 import { Ionicons } from "@expo/vector-icons";
 import AdBanner from "../component/Ads";
 import ExplainScreen from "./ExplainScreen";
 import KoFiWidget from "../component/kofi";
-import TableScreen from "./TableScreen";
+import IndexETFScreen from "./IndexETFScreen";
 import InputScreen from "./InputScreen";
 
 export default function LandingScreen({ navigation }: any) {
-  // Ticker
-  const [openTicker, setOpenTicker] = useState(false);
-  const [ticker, setTicker] = useState("SPY");
-  const [itemsTicker, setItemsTicker] = useState([
-    { label: "SPY", value: "SPY" },
-    { label: "SPXL (×3)", value: "SPXL" },
-    { label: "QQQ", value: "QQQ" },
-    { label: "TQQQ (×3)", value: "TQQQ" },
-    { label: "SOXX", value: "SOXX" },
-    { label: "SOXL (×3)", value: "SOXL" },
-    { label: "TSLA", value: "TSLA" },
-    { label: "TSLL (×2)", value: "TSLL" },
-    { label: "NVDA", value: "NVDA" },
-    { label: "NVDL (×2)", value: "NVDL" },
-    { label: "GLD", value: "GLD" },
-    { label: "TLT", value: "TLT" },
-    { label: "CONL (×2)", value: "CONL" },
-  ]);
-
-  // Moving Average Window Size
-  const [openWindow, setOpenWindow] = useState(false);
-  const [window, setWindow] = useState(100);
-  const [itemsWindow, setItemsWindow] = useState([
-    { label: "20", value: 20 },
-    { label: "50", value: 50 },
-    { label: "100", value: 100 },
-    { label: "200", value: 200 },
-  ]);
-
-  const handleOpenTicker = () => {
-    setOpenTicker(true);
-    setOpenWindow(false);
-  };
-
-  const handleOpenWindowMA = () => {
-    setOpenTicker(false);
-    setOpenWindow(true);
-  };
-
-  const handleSubmit = () => {
-    navigation.navigate("MainScreen", {
-      ticker: ticker,
-      window: window,
-    });
-  };
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleTableScreen = () => {
     navigation.navigate("TableScreen", {});
@@ -72,10 +28,21 @@ export default function LandingScreen({ navigation }: any) {
     navigation.navigate("ExplainScreen", {});
   };
 
-  const screenWidth = Dimensions.get("window").width;
+  const handleAndroidDownload = () => {
+    const playStoreUrl =
+      "https://play.google.com/store/apps/details?id=com.jaeminson.etfpercentile";
+    Linking.openURL(playStoreUrl);
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
+
   const screenHeight = Dimensions.get("window").height;
   const paddingTop = screenHeight / 5;
-  const paddingBottom = screenHeight / 3;
   const paddinglinkTop = screenHeight / 20;
 
   const styles = StyleSheet.create({
@@ -92,16 +59,46 @@ export default function LandingScreen({ navigation }: any) {
     iconWrapper: {
       marginHorizontal: 16,
     },
-    webContainer: {
-      paddingVertical: 20,
-    },
     cofiSection: {
       marginTop: paddingTop,
+    },
+    androidDownloadSection: {
+      marginTop: 20,
+      alignItems: "center",
+    },
+    androidDownloadButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: "#4285F4",
+      paddingHorizontal: 20,
+      paddingVertical: 12,
+      borderRadius: 8,
+      elevation: 2,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+    androidDownloadText: {
+      color: "white",
+      fontSize: 16,
+      fontWeight: "600",
+      marginLeft: 8,
     },
   });
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={["#0000ff"]}
+          tintColor="#0000ff"
+        />
+      }
+    >
       {Platform.OS === "android" && (
         <View style={styles.iconContainer}>
           <Pressable onPress={handleExplainScreen} style={styles.iconWrapper}>
@@ -114,13 +111,24 @@ export default function LandingScreen({ navigation }: any) {
         </View>
       )}
 
-      <TableScreen />
+      {Platform.OS === "web" && (
+        <View style={styles.androidDownloadSection}>
+          <Pressable
+            onPress={handleAndroidDownload}
+            style={styles.androidDownloadButton}
+          >
+            <Ionicons name="logo-google-playstore" size={24} color="white" />
+            <Text style={styles.androidDownloadText}>More on Android App</Text>
+          </Pressable>
+        </View>
+      )}
+
+      {Platform.OS === "web" && <InputScreen navigation={navigation} />}
+
+      {Platform.OS === "android" && <IndexETFScreen />}
 
       {Platform.OS === "web" && (
-        <View style={styles.webContainer}>
-          <View>
-            <InputScreen />
-          </View>
+        <View>
           <View>
             <ExplainScreen />
           </View>
