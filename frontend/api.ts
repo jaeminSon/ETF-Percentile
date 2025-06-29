@@ -20,7 +20,7 @@ export const fetchChartData = async (ticker: string, window: number) => {
 };
 
 export const fetchPercentileData = async (ticker: string, window: number) => {
-  const BASE_URL = "https://jaemin-lab.ddns.net/api/";
+  const BASE_URL = "https://jaemin-lab.ddns.net/api";
   const url = `${BASE_URL}/percentile?ticker=${ticker}&window=${window}`;
   try {
     const res = await fetch(url);

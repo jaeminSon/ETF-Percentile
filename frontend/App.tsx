@@ -1,8 +1,9 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LandingScreen from "./screen/LandingScreen";
 import InputScreen from "./screen/InputScreen";
-import MainScreen from "./screen/MainScreen";
+import GaugeScreen from "./screen/GaugeScreen";
 import ExplainScreen from "./screen/ExplainScreen";
 import TableScreen from "./screen/TableScreen";
 import { StackParamList } from "./types/StackParamList";
@@ -13,8 +14,9 @@ const linking = {
   prefixes: [],
   config: {
     screens: {
-      InputScreen: "",
-      MainScreen: "main/:ticker/:window",
+      LandingScreen: "",
+      InputScreen: "input",
+      GaugeScreen: "gauge/:ticker/:window",
       TableScreen: "table",
       ExplainScreen: "explain",
     },
@@ -26,13 +28,18 @@ export default function App() {
     <NavigationContainer linking={linking}>
       <Stack.Navigator>
         <Stack.Screen
+          name="LandingScreen"
+          component={LandingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="InputScreen"
           component={InputScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="MainScreen"
-          component={MainScreen}
+          name="GaugeScreen"
+          component={GaugeScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

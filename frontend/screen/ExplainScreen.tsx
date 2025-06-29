@@ -26,9 +26,6 @@ export default function ExplainScreen() {
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      backgroundColor: "#FFFFFF",
-    },
-    container: {
       padding: 16,
       alignItems: "center",
       backgroundColor: "#FFFFFF",
@@ -71,7 +68,7 @@ export default function ExplainScreen() {
   const hour = new Date().toISOString().slice(0, 13);
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.container}>
+    <View style={styles.screen}>
       <Text style={styles.title}>How to Compute Percentile</Text>
       <Text style={styles.paragraph}>
         The following chart shows the returns and trading volumes of SPXL, TQQQ,
@@ -120,6 +117,6 @@ export default function ExplainScreen() {
         </View>
       )}
       <AdBanner />
-    </ScrollView>
+    </View>
   );
 }
