@@ -11,7 +11,6 @@ import {
   Text,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AdBanner from "../component/Ads";
 import ExplainScreen from "./ExplainScreen";
 import KoFiWidget from "../component/kofi";
 import IndexETFScreen from "./IndexETFScreen";
@@ -119,7 +118,7 @@ export default function LandingScreen({ navigation }: any) {
             onPress={handleDefensiveAssetScreen}
             style={styles.iconWrapper}
           >
-            <Ionicons name="logo-usd" size={32} />
+            <Ionicons name="cash-outline" size={32} />
           </Pressable>
           <Pressable onPress={handleInputScreen} style={styles.iconWrapper}>
             <Ionicons name="calculator-outline" size={32} />
@@ -153,8 +152,6 @@ export default function LandingScreen({ navigation }: any) {
           </View>
         </View>
       )}
-
-      {Platform.OS === "android" && <AdBanner />}
     </ScrollView>
   );
 }

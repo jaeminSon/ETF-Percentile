@@ -31,7 +31,7 @@ export default function ExplainScreen() {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
   const paddingBottom = screenHeight / 10;
-  const paddingLeft = screenWidth / 20;
+  const padding = screenWidth / 20;
   const ImageWidth =
     screenWidth > 600 ? screenWidth / 2 : (screenWidth * 9) / 10;
   const LeverageImageHeight = (9 * ImageWidth) / 10;
@@ -42,9 +42,9 @@ export default function ExplainScreen() {
     screen: {
       flex: 1,
       backgroundColor: "#FFFFFF",
+      paddingBottom: 60,
     },
     contentContainer: {
-      flex: 1,
       padding: 16,
       alignItems: "center",
     },
@@ -78,7 +78,7 @@ export default function ExplainScreen() {
     button: {
       width: "90%",
       flex: 1,
-      padding: paddingLeft,
+      padding: padding,
       paddingBottom: paddingBottom,
     },
   });

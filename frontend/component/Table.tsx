@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   ActivityIndicator,
   Dimensions,
 } from "react-native";
@@ -184,7 +183,8 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "600",
     marginBottom: 8,
-    paddingTop: screenHeight / 20,
+    paddingTop: screenHeight / 40,
+    paddingBottom: screenHeight / 40,
     marginRight: 10,
     textAlign: "center",
   },

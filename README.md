@@ -135,6 +135,7 @@ $ cd android
 $ ./gradlew clean
 $ ./gradlew bundleRelease
 # android/app/build/outputs/bundle/release/app-release.aab 에 생성됨
+# aab 파일은 에뮬레이터에 설치 안되므로, apk 파일로 테스트후 Play Store 업로드 시에만 활용
 ```
 
 

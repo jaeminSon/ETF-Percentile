@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Platform } from "react-native";
 import LandingScreen from "./screen/LandingScreen";
 import InputScreen from "./screen/InputScreen";
 import GaugeScreen from "./screen/GaugeScreen";
 import ExplainScreen from "./screen/ExplainScreen";
-import IndexETFScreen from "./screen/IndexETFScreen";
 import TechScreen from "./screen/TechScreen";
 import DefensiveAssetScreen from "./screen/DefensiveAssetScreen";
 import { StackParamList } from "./types/StackParamList";
@@ -27,6 +27,12 @@ const linking = {
 };
 
 export default function App() {
+  useEffect(() => {
+    if (Platform.OS === "web") {
+      document.title = "ETF Percentile";
+    }
+  }, []);
+
   return (
     <NavigationContainer linking={linking}>
       <Stack.Navigator>

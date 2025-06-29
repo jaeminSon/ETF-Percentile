@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from "react";
 import {
   View,
-  Platform,
   Dimensions,
   StyleSheet,
   RefreshControl,
@@ -12,7 +11,8 @@ import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
 export default function DefensiveAssetScreen() {
-  const tickers_defensive_asset = ["TLT", "TMF", "GLD", "SLV", "XLF", "FAS"];
+  const tickers_defensive = ["TLT", "TMF", "GLD", "SLV", "BITX"];
+
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
@@ -24,45 +24,60 @@ export default function DefensiveAssetScreen() {
   }, []);
 
   return (
-    <ScrollView
-      style={styles.screen}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          colors={["#0000ff"]}
-          tintColor="#0000ff"
-        />
-      }
-    >
-      <Table tickers={tickers_defensive_asset} title="Defensive Assets" />
+    <View style={styles.container}>
+      <ScrollView
+        style={styles.screen}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#0000ff"]}
+            tintColor="#0000ff"
+          />
+        }
+      >
+        <View style={styles.table}>
+          <Table tickers={tickers_defensive} title="Defensive Assets" />
+        </View>
 
-      {Platform.OS === "android" && (
         <View style={styles.button}>
           <CustomBack />
         </View>
-      )}
+      </ScrollView>
+
       <AdBanner />
-    </ScrollView>
+    </View>
   );
 }
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const paddingBottom = screenHeight / 10;
-const paddingLeftButton = screenWidth / 20;
+const paddingButton = screenWidth / 20;
 const paddingSide = screenWidth / 40;
+const padding = screenWidth / 20;
+
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
   screen: {
     flex: 1,
     backgroundColor: "#FFFFFF",
     marginLeft: paddingSide,
     marginRight: paddingSide,
+    paddingBottom: 60, // Space for AdBanner only
+  },
+  table: {
+    flex: 1,
+    padding: paddingButton,
     paddingBottom: paddingBottom,
   },
   button: {
+    width: "100%",
     flex: 1,
-    padding: paddingLeftButton,
+    padding: padding,
     paddingBottom: paddingBottom,
   },
 });
