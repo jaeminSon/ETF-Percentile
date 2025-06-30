@@ -139,13 +139,13 @@ export default function InputScreen({ navigation }: any) {
         <Button
           mode="contained"
           onPress={handleSubmit}
-          style={styles.homeButtonContainer}
+          style={{ marginTop: 30 }}
         >
           Compute Percentile
         </Button>
 
         {Platform.OS === "android" && (
-          <View style={styles.homeButtonContainer}>
+          <View>
             <HomeButton />
           </View>
         )}
