@@ -50,6 +50,7 @@ export default function LandingScreen({ navigation }: any) {
 
   const screenHeight = Dimensions.get("window").height;
   const paddingTop = screenHeight / 5;
+  const paddingBottomWeb = screenHeight / 3;
   const paddinglinkTop = screenHeight / 20;
 
   const styles = StyleSheet.create({
@@ -91,6 +92,10 @@ export default function LandingScreen({ navigation }: any) {
       fontSize: 16,
       fontWeight: "600",
       marginLeft: 8,
+    },
+    marginWeb: {
+      color: "white",
+      marginBottom: paddingBottomWeb,
     },
   });
 
@@ -138,7 +143,11 @@ export default function LandingScreen({ navigation }: any) {
         </View>
       )}
 
-      {Platform.OS === "web" && <InputScreen navigation={navigation} />}
+      {Platform.OS === "web" && (
+        <View style={styles.marginWeb}>
+          <InputScreen navigation={navigation} />
+        </View>
+      )}
 
       {Platform.OS === "android" && <IndexETFScreen />}
 
