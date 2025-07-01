@@ -149,7 +149,7 @@ export default function LandingScreen({ navigation }: any) {
         </View>
       )}
 
-      {Platform.OS === "android" && <IndexETFScreen />}
+      <IndexETFScreen />
 
       {Platform.OS === "web" && (
         <View>
