@@ -10,7 +10,7 @@ const HomeButton = () => {
 
   return (
     <IconButton
-      icon={() => <Ionicons name="home-outline" size={40} color="#000" />}
+      icon={() => <Ionicons name="home-outline" size={32} color="#000" />}
       onPress={() => navigation.navigate("LandingScreen")}
       style={{ marginTop: 10 }}
       size={50}

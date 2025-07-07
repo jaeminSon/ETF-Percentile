@@ -166,13 +166,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 8,
     textAlign: "center",
-    minWidth: 70,
+    minWidth: 60,
   },
   cell_percentile: {
     flex: 1,
     padding: 8,
     textAlign: "center",
-    minWidth: 50,
+    minWidth: 45,
   },
   header: {
     fontWeight: "bold",
