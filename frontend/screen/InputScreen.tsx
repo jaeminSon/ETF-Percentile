@@ -45,12 +45,12 @@ export default function InputScreen({ navigation }: any) {
     { label: "BITX (×2)", value: "BITX" },
     { label: "XLF", value: "XLF" },
     { label: "FAS (×3)", value: "FAS" },
-    { label: "Euro", value: "FEZ" },
-    { label: "Emerging", value: "IEMG" },
     { label: "Australia", value: "EWA" },
     { label: "Brazil", value: "EWZ" },
     { label: "Canada", value: "EWC" },
     { label: "China", value: "FXI" },
+    { label: "Emerging", value: "IEMG" },
+    { label: "Euro", value: "FEZ" },
     { label: "Germany", value: "EWG" },
     { label: "Hong Kong", value: "EWH" },
     { label: "India", value: "EPI" },
@@ -179,7 +179,7 @@ export default function InputScreen({ navigation }: any) {
         </Button>
 
         {Platform.OS === "android" && (
-          <View>
+          <View style={styles.homeButtonContainer}>
             <HomeButton />
           </View>
         )}

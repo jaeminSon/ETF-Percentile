@@ -43,7 +43,7 @@ $ sudo caddy run --config ./Caddyfile --adapter caddyfile
 # apk 파일 생성 (실행 파일)
 
 ```
-# pre-build
+# pre-build (Expo config 를 native code 로 변환, android 폴더 생성, native modules 설치)
 $ npx expo prebuild --platform android
 
 # metro.config.js 가 없는 경우, README 페이지 하단의 misc 의 예제를 참조하여 만들기

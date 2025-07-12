@@ -12,12 +12,12 @@ import Table from "../component/Table";
 
 export default function AssetScreen() {
   const tickers_global = [
-    "FEZ",
-    "FXI",
-    "IEMG",
     "EWA",
     "EWZ",
     "EWC",
+    "FXI",
+    "IEMG",
+    "FEZ",
     "EWG",
     "EWH",
     "EPI",
