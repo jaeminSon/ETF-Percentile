@@ -4,5 +4,7 @@ export type StackParamList = {
   GaugeScreen: { ticker: string; window: number };
   ExplainScreen: undefined;
   TechScreen: undefined;
-  DefensiveAssetScreen: undefined;
+  AssetScreen: undefined;
+  GlobalScreen: undefined;
+  SectorScreen: undefined;
 };

@@ -33,6 +33,64 @@ const tickerOnTable = (ticker: string) => {
     ].includes(ticker)
   ) {
     return `${ticker} (×2)`;
+  } else if (
+    [
+      "^SP500-25",
+      "^SP500-30",
+      "^SP500-55",
+      "^SP500-35",
+      "^GSPE",
+      "^SP500-40",
+      "^SP500-20",
+      "^SP500-15",
+      "^SP500-60",
+      "^SP500-45"
+    ].includes(ticker)
+  ) {
+    const sectorAbbrMap: { [key: string]: string } = {
+      "^SP500-25": "Cons. Disc.",
+      "^SP500-30": "Cons. Staples",
+      "^SP500-55": "Utilities",
+      "^SP500-35": "Health Care",
+      "^GSPE": "Energy",
+      "^SP500-40": "Financials",
+      "^SP500-20": "Industrials",
+      "^SP500-15": "Materials",
+      "^SP500-60": "Real Estate",
+      "^SP500-45": "Comm. Serv."
+    };
+    return sectorAbbrMap[ticker] || ticker;
+  } else if (
+    [
+      "FEZ", "FXI", "IEMG", "EWA", "EWZ", "EWC", "EWG", "EWH", "EPI", "EWI", "EWJ", "EWM", "EWW", "IDX", "EWS", "EZA", "EWY", "EWP", "EWL", "EWT", "EWU"
+    ].includes(ticker)
+  ) {
+    const countryAbbrMap: { [key: string]: string } = {
+      "FEZ": "Euro",
+      "FXI": "China",
+      "IEMG": "Emerging",
+      "EWA": "Australia",
+      "EWZ": "Brazil",
+      "EWC": "Canada",
+      "EWG": "Germany",
+      "EWH": "Hong Kong",
+      "EPI": "India",
+      "EWI": "Italy",
+      "EWJ": "Japan",
+      "EWM": "Malaysia",
+      "EWW": "Mexico",
+      "IDX": "Indonesia",
+      "EWS": "Singapore",
+      "EZA": "South Africa",
+      "EWY": "Korea",
+      "EWP": "Spain",
+      "EWL": "Switzerland",
+      "EWT": "Taiwan",
+      "EWU": "United Kingdom",
+    };
+    return countryAbbrMap[ticker] || ticker;
+  } else if (ticker === "BTC-USD") {
+    return "BTC";
   } else {
     return ticker;
   }

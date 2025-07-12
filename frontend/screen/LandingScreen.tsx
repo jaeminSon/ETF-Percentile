@@ -31,8 +31,16 @@ export default function LandingScreen({ navigation }: any) {
     navigation.navigate("TechScreen", {});
   };
 
-  const handleDefensiveAssetScreen = () => {
-    navigation.navigate("DefensiveAssetScreen", {});
+  const handleGlobalScreen = () => {
+    navigation.navigate("GlobalScreen", {});
+  };
+
+  const handleSectorScreen = () => {
+    navigation.navigate("SectorScreen", {});
+  };
+
+  const handleAssetScreen = () => {
+    navigation.navigate("AssetScreen", {});
   };
 
   const handleAndroidDownload = () => {
@@ -119,11 +127,14 @@ export default function LandingScreen({ navigation }: any) {
           <Pressable onPress={handleTechScreen} style={styles.iconWrapper}>
             <Ionicons name="rocket-outline" size={32} />
           </Pressable>
-          <Pressable
-            onPress={handleDefensiveAssetScreen}
-            style={styles.iconWrapper}
-          >
+          <Pressable onPress={handleAssetScreen} style={styles.iconWrapper}>
             <Ionicons name="cash-outline" size={32} />
+          </Pressable>
+          <Pressable onPress={handleGlobalScreen} style={styles.iconWrapper}>
+            <Ionicons name="globe-outline" size={32} />
+          </Pressable>
+          <Pressable onPress={handleSectorScreen} style={styles.iconWrapper}>
+            <Ionicons name="compass-outline" size={32} />
           </Pressable>
           <Pressable onPress={handleInputScreen} style={styles.iconWrapper}>
             <Ionicons name="calculator-outline" size={32} />

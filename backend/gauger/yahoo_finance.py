@@ -37,15 +37,17 @@ def get_all_tickers() -> list:
 
     index_tickers = load_tickers_from_json(os.path.join(current_dir, "index.json"))
     tech_tickers = load_tickers_from_json(os.path.join(current_dir, "tech.json"))
-    diffensive_tickers = load_tickers_from_json(
-        os.path.join(current_dir, "defensive_asset.json")
-    )
+    asset_tickers = load_tickers_from_json(os.path.join(current_dir, "asset.json"))
+    country_tickers = load_tickers_from_json(os.path.join(current_dir, "country.json"))
+    sectors_tickers = load_tickers_from_json(os.path.join(current_dir, "sectors.json"))
 
     # Combine and remove duplicates while preserving order
     all_tickers = []
     seen = set()
 
-    for ticker in index_tickers + diffensive_tickers + tech_tickers:
+    for ticker in (
+        index_tickers + asset_tickers + tech_tickers + country_tickers + sectors_tickers
+    ):
         if ticker not in seen:
             all_tickers.append(ticker)
             seen.add(ticker)
