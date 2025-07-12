@@ -1,6 +1,7 @@
 # others
 image
 caddyfile
+nginx.conf
 ads.txt
 misc
 kubernetes
