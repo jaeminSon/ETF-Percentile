@@ -10,7 +10,7 @@ import AdBanner from "../component/Ads";
 import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
-export default function AssetScreen() {
+export default function GlobalScreen() {
   const tickers_global = [
     "EWA",
     "EWZ",
@@ -59,7 +59,7 @@ export default function AssetScreen() {
         }
       >
         <View style={styles.table}>
-          <Table tickers={tickers_global} title="Assets" />
+          <Table tickers={tickers_global} title="Global" />
         </View>
 
         <View style={styles.button}>

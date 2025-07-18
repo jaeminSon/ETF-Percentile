@@ -15,6 +15,7 @@ import ExplainScreen from "./ExplainScreen";
 import KoFiWidget from "../component/kofi";
 import IndexETFScreen from "./IndexETFScreen";
 import InputScreen from "./InputScreen";
+import AdBanner from "../component/Ads";
 
 export default function LandingScreen({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);

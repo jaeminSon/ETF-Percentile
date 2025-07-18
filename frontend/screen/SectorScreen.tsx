@@ -10,7 +10,7 @@ import AdBanner from "../component/Ads";
 import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
-export default function AssetScreen() {
+export default function SectorScreen() {
   const tickers_sector = [
     "^SP500-45",
     "^SP500-25",
@@ -48,7 +48,7 @@ export default function AssetScreen() {
         }
       >
         <View style={styles.table}>
-          <Table tickers={tickers_sector} title="Assets" />
+          <Table tickers={tickers_sector} title="Sectors" />
         </View>
 
         <View style={styles.button}>

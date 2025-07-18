@@ -55,8 +55,8 @@ export default function IndexETFScreen() {
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
-const paddingBottom = screenHeight / 5;
-const paddingButton = screenWidth / 20;
+const paddingBottom = screenHeight / 10;
+const paddingTable = screenWidth / 20;
 const paddingSide = screenWidth / 40;
 const styles = StyleSheet.create({
   container: {
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   table: {
     flex: 1,
-    padding: paddingButton,
+    padding: paddingTable,
     paddingBottom: paddingBottom,
   },
 });
