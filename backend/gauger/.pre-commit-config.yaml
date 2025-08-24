@@ -1,10 +1,10 @@
 repos:
   - repo: https://github.com/psf/black
-    rev: 24.4.2  # Use the latest version or pin to a specific
+    rev: 24.4.2 # Use the latest version or pin to a specific
     hooks:
       - id: black
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.4  # Use the latest version of ruff-pre-commit
+    rev: v0.4.4 # Use the latest version of ruff-pre-commit
     hooks:
       - id: ruff
