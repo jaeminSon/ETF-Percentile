@@ -88,6 +88,23 @@ const tickers_tech = [
   "TSLL",
 ];
 
+const getTickersByCategory = (category: string): string[] => {
+  switch (category) {
+    case "index":
+      return tickers_index;
+    case "asset":
+      return tickers_asset;
+    case "global":
+      return tickers_global;
+    case "sector":
+      return tickers_sector;
+    case "tech":
+      return tickers_tech;
+    default:
+      return [];
+  }
+};
+
 const getPriceTextStyle = (priceRatio: number) => {
   if (priceRatio > 80) return { color: "red" };
   if (priceRatio > 60) return { color: "orange" };
@@ -211,32 +228,10 @@ interface TableProps {
   title: string;
 }
 
-export default function Table({
-  category,
-  title,
-}: TableProps) {
+export default function Table({ category, title }: TableProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [categoryTickers, setCategoryTickers] = useState<string[]>([]);
-
-  const getTickersByCategory = (category: string): string[] => {
-    switch (category) {
-      case "index":
-        return tickers_index;
-      case "asset":
-        return tickers_asset;
-      case "global":
-        return tickers_global;
-      case "sector":
-        return tickers_sector;
-      case "tech":
-        return tickers_tech;
-      default:
-        return [];
-    }
-  };
-  const predefinedTickers = getTickersByCategory(category);
-  setCategoryTickers(predefinedTickers);
 
   useEffect(() => {
     const loadAllData = async () => {
@@ -251,6 +246,11 @@ export default function Table({
       setLoading(false);
     };
     loadAllData();
+  }, [category]);
+
+  useEffect(() => {
+    const predefinedTickers = getTickersByCategory(category);
+    setCategoryTickers(predefinedTickers);
   }, [category]);
 
   if (loading) {
