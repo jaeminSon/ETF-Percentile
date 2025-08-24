@@ -91,6 +91,8 @@ const tickerOnTable = (ticker: string) => {
     return countryAbbrMap[ticker] || ticker;
   } else if (ticker === "BTC-USD") {
     return "BTC";
+  } else if (ticker === "ETH-USD") {
+    return "Ethereum";
   } else {
     return ticker;
   }

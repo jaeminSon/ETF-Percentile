@@ -1,5 +1,16 @@
 [
   [
+    "DX-Y.NYB",
+    "Dollar Index"
+  ],
+  [
+    "EURUSD=X",
+    "EURO"],
+  [
+    "JPYUSD=X",
+    "JPY"
+  ],
+  [
     "TLT",
     "iShares 20+ Year Treasury Bond ETF"
   ],
@@ -26,6 +37,10 @@
   [
     "BITX",
     "2x Bitcoin Strategy ETF"
+  ],
+  [
+    "ETH-USD",
+    "Ethereum"
   ],
   [
     "XLF",

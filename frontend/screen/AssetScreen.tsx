@@ -11,8 +11,8 @@ import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
 export default function AssetScreen() {
-  const tickers_asset = ["TLT", "TMF", "GLD", "SLV", "BTC-USD", "BITX", "XLF", "FAS"];
-
+  const tickers_asset = ["DX-Y.NYB", "EURUSD=X", "JPYUSD=X", "TLT", "TMF", "GLD", "SLV", "BTC-USD", "BITX", "ETH-USD", "XLF", "FAS"];
+ 
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
