@@ -107,20 +107,19 @@ export default function LandingScreen({ navigation }: any) {
       marginBottom: paddingBottomWeb,
     },
   });
-  
+
   return (
     <ScrollView
-    style={styles.container}
-    refreshControl={
-      <RefreshControl
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-      colors={["#0000ff"]}
-      tintColor="#0000ff"
-      />
-    }
+      style={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={["#0000ff"]}
+          tintColor="#0000ff"
+        />
+      }
     >
-      
       {Platform.OS === "android" && (
         <View style={styles.iconContainer}>
           <Pressable onPress={handleExplainScreen} style={styles.iconWrapper}>
@@ -131,7 +130,7 @@ export default function LandingScreen({ navigation }: any) {
           </Pressable>
         </View>
       )}
-      
+
       {Platform.OS === "android" && (
         <View style={styles.iconContainer}>
           <Pressable onPress={handleTechScreen} style={styles.iconWrapper}>
@@ -146,16 +145,15 @@ export default function LandingScreen({ navigation }: any) {
           <Pressable onPress={handleSectorScreen} style={styles.iconWrapper}>
             <Ionicons name="compass-outline" size={32} />
           </Pressable>
-          </View>
-          )}
-      
+        </View>
+      )}
 
       {Platform.OS === "web" && (
         <View style={styles.androidDownloadSection}>
           <Pressable
             onPress={handleAndroidDownload}
             style={styles.androidDownloadButton}
-            >
+          >
             <Ionicons name="logo-google-playstore" size={24} color="white" />
             <Text style={styles.androidDownloadText}>More on Android App</Text>
           </Pressable>

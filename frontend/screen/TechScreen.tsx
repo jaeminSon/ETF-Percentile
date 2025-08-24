@@ -11,27 +11,6 @@ import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
 export default function TechScreen() {
-  const tickers_tech = [
-    "SMH",
-    "SOXL",
-    "AAPL",
-    "AAPU",
-    "AMZN",
-    "AMZU",
-    "COIN",
-    "CONL",
-    "META",
-    "FBL",
-    "GOOGL",
-    "GGLL",
-    "MSFT",
-    "MSFU",
-    "NVDA",
-    "NVDL",
-    "TSLA",
-    "TSLL",
-  ];
-
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
@@ -56,7 +35,7 @@ export default function TechScreen() {
         }
       >
         <View style={styles.table}>
-          <Table tickers={tickers_tech} title="Technology" />
+          <Table category="tech" title="Technology" />
         </View>
 
         <View style={styles.button}>

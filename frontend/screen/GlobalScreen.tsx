@@ -11,30 +11,6 @@ import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
 export default function GlobalScreen() {
-  const tickers_global = [
-    "EWA",
-    "EWZ",
-    "EWC",
-    "FXI",
-    "IEMG",
-    "FEZ",
-    "EWG",
-    "EWH",
-    "EPI",
-    "EWI",
-    "EWJ",
-    "EWM",
-    "EWW",
-    "IDX",
-    "EWS",
-    "EZA",
-    "EWY",
-    "EWP",
-    "EWL",
-    "EWT",
-    "EWU",
-  ];
-
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
@@ -59,7 +35,7 @@ export default function GlobalScreen() {
         }
       >
         <View style={styles.table}>
-          <Table tickers={tickers_global} title="Global" />
+          <Table category="global" title="Global" />
         </View>
 
         <View style={styles.button}>

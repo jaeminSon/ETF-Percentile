@@ -11,19 +11,6 @@ import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
 export default function SectorScreen() {
-  const tickers_sector = [
-    "^SP500-45",
-    "^SP500-25",
-    "^SP500-30",
-    "^GSPE",
-    "^SP500-40",
-    "^SP500-35",
-    "^SP500-20",
-    "^SP500-15",
-    "^SP500-60",
-    "^SP500-55",
-  ];
-
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
@@ -48,7 +35,7 @@ export default function SectorScreen() {
         }
       >
         <View style={styles.table}>
-          <Table tickers={tickers_sector} title="Sectors" />
+          <Table category="sector" title="Sectors" />
         </View>
 
         <View style={styles.button}>

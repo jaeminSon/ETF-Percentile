@@ -10,16 +10,6 @@ import AdBanner from "../component/Ads";
 import Table from "../component/Table";
 
 export default function IndexETFScreen() {
-  const tickers_index = [
-    "SPY",
-    "SPXL",
-    "QQQ",
-    "TQQQ",
-    "DIA",
-    "DDM",
-    "IWM",
-    "TNA",
-  ];
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
@@ -44,7 +34,7 @@ export default function IndexETFScreen() {
         }
       >
         <View style={styles.table}>
-          <Table tickers={tickers_index} title="Index ETF" />
+          <Table category="index" title="Index ETF" />
         </View>
       </ScrollView>
 

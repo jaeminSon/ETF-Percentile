@@ -6,7 +6,87 @@ import {
   ActivityIndicator,
   Dimensions,
 } from "react-native";
-import { fetchPercentileData } from "../api";
+import { fetchPageData } from "../api";
+
+const tickers_index = [
+  "SPY",
+  "SPXL",
+  "QQQ",
+  "TQQQ",
+  "DIA",
+  "DDM",
+  "IWM",
+  "TNA",
+];
+const tickers_asset = [
+  "DX-Y.NYB",
+  "EURUSD=X",
+  "JPYUSD=X",
+  "TLT",
+  "TMF",
+  "GLD",
+  "SLV",
+  "BTC-USD",
+  "BITX",
+  "ETH-USD",
+  "XLF",
+  "FAS",
+];
+const tickers_global = [
+  "EWA",
+  "EWZ",
+  "EWC",
+  "FXI",
+  "IEMG",
+  "FEZ",
+  "EWG",
+  "EWH",
+  "EPI",
+  "EWI",
+  "EWJ",
+  "EWM",
+  "EWW",
+  "IDX",
+  "EWS",
+  "EZA",
+  "EWY",
+  "EWP",
+  "EWL",
+  "EWT",
+  "EWU",
+];
+const tickers_sector = [
+  "^SP500-45",
+  "^SP500-25",
+  "^SP500-30",
+  "^GSPE",
+  "^SP500-40",
+  "^SP500-35",
+  "^SP500-20",
+  "^SP500-15",
+  "^SP500-60",
+  "^SP500-55",
+];
+const tickers_tech = [
+  "SMH",
+  "SOXL",
+  "AAPL",
+  "AAPU",
+  "AMZN",
+  "AMZU",
+  "COIN",
+  "CONL",
+  "META",
+  "FBL",
+  "GOOGL",
+  "GGLL",
+  "MSFT",
+  "MSFU",
+  "NVDA",
+  "NVDL",
+  "TSLA",
+  "TSLL",
+];
 
 const getPriceTextStyle = (priceRatio: number) => {
   if (priceRatio > 80) return { color: "red" };
@@ -44,7 +124,7 @@ const tickerOnTable = (ticker: string) => {
       "^SP500-20",
       "^SP500-15",
       "^SP500-60",
-      "^SP500-45"
+      "^SP500-45",
     ].includes(ticker)
   ) {
     const sectorAbbrMap: { [key: string]: string } = {
@@ -57,36 +137,56 @@ const tickerOnTable = (ticker: string) => {
       "^SP500-20": "Industrials",
       "^SP500-15": "Materials",
       "^SP500-60": "Real Estate",
-      "^SP500-45": "Comm. Serv."
+      "^SP500-45": "Comm. Serv.",
     };
     return sectorAbbrMap[ticker] || ticker;
   } else if (
     [
-      "FEZ", "FXI", "IEMG", "EWA", "EWZ", "EWC", "EWG", "EWH", "EPI", "EWI", "EWJ", "EWM", "EWW", "IDX", "EWS", "EZA", "EWY", "EWP", "EWL", "EWT", "EWU"
+      "FEZ",
+      "FXI",
+      "IEMG",
+      "EWA",
+      "EWZ",
+      "EWC",
+      "EWG",
+      "EWH",
+      "EPI",
+      "EWI",
+      "EWJ",
+      "EWM",
+      "EWW",
+      "IDX",
+      "EWS",
+      "EZA",
+      "EWY",
+      "EWP",
+      "EWL",
+      "EWT",
+      "EWU",
     ].includes(ticker)
   ) {
     const countryAbbrMap: { [key: string]: string } = {
-      "FEZ": "Euro",
-      "FXI": "China",
-      "IEMG": "Emerging",
-      "EWA": "Australia",
-      "EWZ": "Brazil",
-      "EWC": "Canada",
-      "EWG": "Germany",
-      "EWH": "Hong Kong",
-      "EPI": "India",
-      "EWI": "Italy",
-      "EWJ": "Japan",
-      "EWM": "Malaysia",
-      "EWW": "Mexico",
-      "IDX": "Indonesia",
-      "EWS": "Singapore",
-      "EZA": "South Africa",
-      "EWY": "Korea",
-      "EWP": "Spain",
-      "EWL": "Switzerland",
-      "EWT": "Taiwan",
-      "EWU": "United Kingdom",
+      FEZ: "Euro",
+      FXI: "China",
+      IEMG: "Emerging",
+      EWA: "Australia",
+      EWZ: "Brazil",
+      EWC: "Canada",
+      EWG: "Germany",
+      EWH: "Hong Kong",
+      EPI: "India",
+      EWI: "Italy",
+      EWJ: "Japan",
+      EWM: "Malaysia",
+      EWW: "Mexico",
+      IDX: "Indonesia",
+      EWS: "Singapore",
+      EZA: "South Africa",
+      EWY: "Korea",
+      EWP: "Spain",
+      EWL: "Switzerland",
+      EWT: "Taiwan",
+      EWU: "United Kingdom",
     };
     return countryAbbrMap[ticker] || ticker;
   } else if (ticker === "BTC-USD") {
@@ -107,43 +207,51 @@ const formatDate = (dateString: string) => {
 };
 
 interface TableProps {
-  tickers: string[];
+  category: string;
   title: string;
-  windows?: number[];
 }
 
 export default function Table({
-  tickers,
+  category,
   title,
-  windows = [20, 50, 100, 200],
 }: TableProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categoryTickers, setCategoryTickers] = useState<string[]>([]);
+
+  const getTickersByCategory = (category: string): string[] => {
+    switch (category) {
+      case "index":
+        return tickers_index;
+      case "asset":
+        return tickers_asset;
+      case "global":
+        return tickers_global;
+      case "sector":
+        return tickers_sector;
+      case "tech":
+        return tickers_tech;
+      default:
+        return [];
+    }
+  };
+  const predefinedTickers = getTickersByCategory(category);
+  setCategoryTickers(predefinedTickers);
 
   useEffect(() => {
     const loadAllData = async () => {
-      const allPromises = [];
-
-      for (const ticker of tickers) {
-        for (const window of windows) {
-          allPromises.push(
-            fetchPercentileData(ticker, window).then((result) => ({
-              ticker,
-              window,
-              date: result.date[result.date.length - 1],
-              percentile: result.price_ratio_percentile,
-            })),
-          );
-        }
-      }
-
-      const allResults = await Promise.all(allPromises);
-      const flattened = allResults.flat().filter(Boolean);
-      setData(flattened);
+      const rawData = await fetchPageData(category);
+      const processedData = rawData.map((result: any) => ({
+        ticker: result.ticker,
+        window: result.window,
+        date: result.date[result.date.length - 1],
+        percentile: result.price_ratio_percentile,
+      }));
+      setData(processedData);
       setLoading(false);
     };
     loadAllData();
-  }, [tickers, windows]);
+  }, [category]);
 
   if (loading) {
     return <ActivityIndicator style={{ marginTop: 50 }} />;
@@ -166,7 +274,11 @@ export default function Table({
     return acc;
   }, []);
 
-  console.info(pivotedData);
+  const sortedData = pivotedData.sort((a, b) => {
+    const aIndex = categoryTickers.indexOf(a.ticker);
+    const bIndex = categoryTickers.indexOf(b.ticker);
+    return aIndex - bIndex;
+  });
 
   return (
     <View style={styles.table}>
@@ -182,7 +294,7 @@ export default function Table({
       </View>
 
       {/* Rows */}
-      {pivotedData.map((item, index) => (
+      {sortedData.map((item, index) => (
         <View key={index} style={styles.row}>
           <Text style={styles.cell_ticker}>{tickerOnTable(item.ticker)}</Text>
           <Text style={styles.cell_date}>{formatDate(item.date)}</Text>

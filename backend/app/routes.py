@@ -1,4 +1,5 @@
 import os
+import json
 from typing import List, Dict
 from collections import defaultdict
 from functools import lru_cache
@@ -14,6 +15,7 @@ home_ads = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 home_images = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "gauger", "image")
 )
+home_gauger = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "gauger"))
 
 
 def res2dict(res: List[object]) -> Dict[str, List[object]]:
@@ -60,7 +62,7 @@ def serve(ticker: str, window: int):
     res = extract_data(d, window)
     res["ticker"] = ticker
     res["window"] = window
-    return jsonify(res)
+    return res
 
 
 @lru_cache(maxsize=512)
@@ -71,21 +73,49 @@ def serve_percentile(ticker: str, window: int):
     res = extract_data(d, window, return_series=False)
     res["ticker"] = ticker
     res["window"] = window
-    return jsonify(res)
+    return res
 
 
 @main.route("/percentile", methods=["GET"])
 def get_percentile():
     ticker = request.args.get("ticker", type=str)
     window = request.args.get("window", type=int)
-    return serve_percentile(ticker, window)
+    return jsonify(serve_percentile(ticker, window))
 
 
 @main.route("/stocks", methods=["GET"])
 def get_stocks():
     ticker = request.args.get("ticker", type=str)
     window = request.args.get("window", type=int)
-    return serve(ticker, window)
+    return jsonify(serve(ticker, window))
+
+
+@main.route("/page", methods=["GET"])
+def get_page_data():
+    category = request.args.get("category", type=str)
+    category_map = {
+        "tech": "tech.json",
+        "asset": "asset.json",
+        "global": "country.json",
+        "sector": "sectors.json",
+        "index": "index.json",
+    }
+
+    try:
+        json_file_path = os.path.join(home_gauger, category_map[category])
+        with open(json_file_path, "r") as f:
+            data = json.load(f)
+
+        tickers = [item[0] for item in data if item[0]]
+        return jsonify(
+            [
+                serve_percentile(ticker, window)
+                for ticker in tickers
+                for window in [20, 50, 100, 200]
+            ]
+        )
+    except FileNotFoundError:
+        return jsonify({"error": "Failed to fetch data."}), 404
 
 
 @main.route("/update-database", methods=["POST"])

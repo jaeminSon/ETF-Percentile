@@ -31,3 +31,16 @@ export const fetchPercentileData = async (ticker: string, window: number) => {
     return null;
   }
 };
+
+export const fetchPageData = async (category: string) => {
+  const BASE_URL = "https://jaemin-lab.ddns.net/api";
+  const url = `${BASE_URL}/page?category=${category}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching page data:", error);
+    return null;
+  }
+};

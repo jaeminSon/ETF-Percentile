@@ -11,8 +11,6 @@ import CustomBack from "../component/BackButton";
 import Table from "../component/Table";
 
 export default function AssetScreen() {
-  const tickers_asset = ["DX-Y.NYB", "EURUSD=X", "JPYUSD=X", "TLT", "TMF", "GLD", "SLV", "BTC-USD", "BITX", "ETH-USD", "XLF", "FAS"];
- 
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
@@ -37,7 +35,7 @@ export default function AssetScreen() {
         }
       >
         <View style={styles.table}>
-          <Table tickers={tickers_asset} title="Assets" />
+          <Table category="asset" title="Assets" />
         </View>
 
         <View style={styles.button}>
