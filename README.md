@@ -1,4 +1,5 @@
 # Setting up
+
 ```
 # Backend server
 $ cd backend
@@ -24,6 +25,7 @@ $ brew install caddy
 ```
 
 # Server Command
+
 ```
 # initiate backend server
 $ cd backend
@@ -128,7 +130,7 @@ $ npx react-native bundle \
   --assets-dest android/app/src/main/res
 ```
 
-- aab 파일 생성 
+- aab 파일 생성
 
 ```
 $ cd android
@@ -139,8 +141,8 @@ $ ./gradlew bundleRelease
 # Test and Release tab -> Production tab -> Create New Release button
 ```
 
-
 # Misc
+
 - gunicorn workers that waited too long dies and this is a feature.
 
 ```
