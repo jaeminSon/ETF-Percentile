@@ -132,7 +132,7 @@ def save_recent_data_to_database(new_stock_data: Dict[str, pd.DataFrame]) -> Lis
                     price_ratio_50ma=datum["price_ratio_50ma"],
                     price_ratio_100ma=datum["price_ratio_100ma"],
                     price_ratio_200ma=datum["price_ratio_200ma"],
-                    volume=math.log(row["volume"]),
+                    volume=math.log(max(1, row["volume"])),
                 )
                 objects.append(obj)
 
