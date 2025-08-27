@@ -211,11 +211,11 @@ const tickerOnTable = (ticker: string) => {
   } else if (ticker === "ETH-USD") {
     return "Ethereum";
   } else if (ticker === "DX-Y.NYB") {
-    return "Dollar";
+    return "Dollar Index";
   } else if (ticker === "EURUSD=X") {
-    return "EURO";
+    return "EUR/USD";
   } else if (ticker === "JPYUSD=X") {
-    return "JPY";
+    return "JPY/USD";
   } else {
     return ticker;
   }
