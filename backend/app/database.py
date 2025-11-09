@@ -103,11 +103,6 @@ def save_recent_data_to_database(new_stock_data: Dict[str, pd.DataFrame]) -> Lis
         for index, row in new_stock_data[ticker].iterrows():
             date = datetime.date(index)
 
-            if (index == 0) and working_data[-1]["date"] < date:
-                # no dates overlap
-                tickers_replace.add(ticker)
-                break
-
             if (working_data[-1]["date"] == date) and (
                 abs(working_data[-1]["price"] - row["price"]) > 1e-3
             ):
