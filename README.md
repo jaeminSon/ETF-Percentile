@@ -10,7 +10,7 @@ $ cd frontend
 $ npm install
 
 # Home server
-# portforwarding: router page 에서 세팅
+# portforwarding: router page 에서 세팅 (no-ip 들어가서 Reset Update Client DDNS Key)
 # Caddy for https on mac
 $ brew install caddy
 
