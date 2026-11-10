@@ -4,6 +4,20 @@ import pandas as pd
 
 from .yahoo_finance import download, all_tickers
 
+hotfix_table = {
+    "^SP500-25": "XLY",
+    "^SP500-30": "XLP",
+    "^SP500-55": "XLU",
+    "^SP500-35": "XLV",
+    "^GSPE": "XLE",
+    "^SP500-40": "VFH",
+    "^SP500-20": "XLI",
+    "^SP500-15": "XLB",
+    "^SP500-60": "XLRE",
+    "^SP500-45": "XLC",
+}
+hotfix_table_rev = {v: k for k, v in hotfix_table.items()}
+
 
 def divide_by_rolling_ma(
     series: pd.Series, window: int, return_rolling_ma=False
@@ -30,19 +44,21 @@ def stock_data(
     end_date: str = None,
     return_moving_average=False,
 ):
-    df = download(tickers, start_date, end_date)
+    tickers_yf = [hotfix_table[t] if t in hotfix_table else t for t in tickers]
+
+    df = download(tickers_yf, start_date, end_date)
     df.dropna(inplace=True)
 
     data = {}
-    for ticker in tickers:
+    for ticker_yf in tickers_yf:
         df_by_window = [
-            df["Close"][ticker].to_frame("price"),
-            df["Volume"][ticker].to_frame("volume"),
+            df["Close"][ticker_yf].to_frame("price"),
+            df["Volume"][ticker_yf].to_frame("volume"),
         ]
         if return_moving_average:
             for i, window in enumerate([20, 50, 100, 200]):
                 price_ratio, price_ma = divide_by_rolling_ma(
-                    df["Close"][ticker], window, True
+                    df["Close"][ticker_yf], window, True
                 )
                 price_ratio = price_ratio.to_frame(f"price_ratio_{window}ma")
                 price_ma = price_ma.to_frame(f"price_{window}ma")
@@ -50,7 +66,10 @@ def stock_data(
                 merged_df = merge_dataframes([price_ratio, price_ma])
                 df_by_window.append(merged_df)
 
-        data[ticker] = merge_dataframes(df_by_window)
+        if ticker_yf in hotfix_table_rev:
+            data[hotfix_table_rev[ticker_yf]] = merge_dataframes(df_by_window)
+        else:
+            data[ticker_yf] = merge_dataframes(df_by_window)
 
     return data
 
