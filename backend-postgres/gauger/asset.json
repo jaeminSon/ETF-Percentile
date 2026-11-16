@@ -1,0 +1,49 @@
+[
+  [
+    "DX-Y.NYB",
+    "Dollar Index"
+  ],
+  [
+    "EURUSD=X",
+    "EURO"],
+  [
+    "JPYUSD=X",
+    "JPY"
+  ],
+  [
+    "TLT",
+    "iShares 20+ Year Treasury Bond ETF"
+  ],
+  [
+    "TMF",
+    "Direxion Daily 20+ Year Treasury Bull 3X Shares"
+  ],
+  [
+    "GLD",
+    "SPDR Gold Shares"
+  ],
+  [
+    "SLV",
+    "iShares Silver Trust"
+  ],
+  [
+    "BTC-USD",
+    "Bitcoin"
+  ],
+  [
+    "BITX",
+    "2x Bitcoin Strategy ETF"
+  ],
+  [
+    "ETH-USD",
+    "Ethereum"
+  ],
+  [
+    "XLF",
+    "Financial Select Sector SPDR Fund"
+  ],
+  [
+    "FAS",
+    "Direxion Daily Financial Bull 3X Shares"
+  ]
+]
