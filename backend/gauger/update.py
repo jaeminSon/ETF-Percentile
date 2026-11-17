@@ -23,7 +23,7 @@ import yfinance as yf
 
 from .log import logger
 from .store import DATA_DIR, read_ticker, save_ticker
-from .yahoo_finance import all_tickers
+from .yahoo_finance import all_tickers, download_history
 
 # Yahoo stopped serving some index symbols; serve the sector ETF instead.
 SOURCE_OVERRIDES = {
@@ -45,78 +45,6 @@ RETRIES = 3
 MIN_LENGTH_RATIO = 0.9
 
 
-def _flatten(df: pd.DataFrame) -> pd.DataFrame:
-    """Reduce a yfinance frame to a DatetimeIndex with flat OHLCV column names.
-
-    yfinance has changed its column layout several times (flat vs. MultiIndex,
-    level order), so locate the level that holds the field names instead of
-    assuming one.
-    """
-    if isinstance(df.columns, pd.MultiIndex):
-        for level in range(df.columns.nlevels):
-            if "Close" in df.columns.get_level_values(level):
-                df = df.copy()
-                df.columns = df.columns.get_level_values(level)
-                break
-    df = df.loc[:, ~df.columns.duplicated()]
-    index = pd.to_datetime(df.index)
-    if index.tz is not None:
-        # Keep the exchange-local calendar date.
-        index = index.tz_localize(None)
-    df.index = index.normalize()
-    return df
-
-
-def _normalize(raw: pd.DataFrame) -> Optional[pd.DataFrame]:
-    if raw is None or raw.empty:
-        return None
-    df = _flatten(raw)
-    if "Close" not in df.columns:
-        return None
-    out = pd.DataFrame(
-        {
-            "price": pd.to_numeric(df["Close"], errors="coerce"),
-            "volume": (
-                pd.to_numeric(df["Volume"], errors="coerce")
-                if "Volume" in df.columns
-                else 0.0
-            ),
-        },
-        index=df.index,
-    )
-    out = out[out["price"].notna() & (out["price"] > 0)]
-    out["volume"] = out["volume"].fillna(0.0)
-    out = out[~out.index.duplicated(keep="last")].sort_index()
-    return out if not out.empty else None
-
-
-def download_history(symbol: str) -> Optional[pd.DataFrame]:
-    """Full daily history, trying yf.download first and Ticker.history as a fallback."""
-    fetchers = (
-        lambda: yf.download(
-            symbol,
-            period="max",
-            interval="1d",
-            auto_adjust=True,
-            progress=False,
-            threads=False,
-        ),
-        lambda: yf.Ticker(symbol).history(
-            period="max", interval="1d", auto_adjust=True
-        ),
-    )
-    for attempt in range(1, RETRIES + 1):
-        for fetch in fetchers:
-            try:
-                df = _normalize(fetch())
-                if df is not None:
-                    return df
-            except Exception as e:  # yfinance raises many different error types
-                logger.warning(f"{symbol}: download attempt {attempt} failed: {e!r}")
-        time.sleep(2 * attempt)
-    return None
-
-
 def _validate(ticker: str, new: pd.DataFrame) -> Optional[str]:
     """Return a reason to reject the new download, or None if it looks sane."""
     old = read_ticker(ticker)
@@ -131,7 +59,7 @@ def _validate(ticker: str, new: pd.DataFrame) -> Optional[str]:
 
 def update_ticker(ticker: str, updated_at: str) -> bool:
     source = SOURCE_OVERRIDES.get(ticker, ticker)
-    df = download_history(source)
+    df = download_history(source, retries=RETRIES, log=logger.warning)
     if df is None:
         logger.error(f"{ticker}: no data from Yahoo Finance; keeping previous file")
         return False

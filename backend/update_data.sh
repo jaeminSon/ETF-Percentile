@@ -15,6 +15,6 @@ echo "=== $(date '+%Y-%m-%d %H:%M:%S') update start"
 status=$?
 
 mkdir -p gauger/image
-"$PYTHON" -m gauger.plot
+"$PYTHON" -m gauger.app_images
 
 exit $status

@@ -229,3 +229,6 @@ yarn-error.*
 # backend runtime
 backend/data/
 backend/.venv/
+backend/search_for_undervalued_stocks/
+backend/credentials/
+backend/tmp/
