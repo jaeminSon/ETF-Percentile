@@ -1,7 +1,7 @@
 import os
 import logging
 
-home_log = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+home_log = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 logging.basicConfig(
     level=logging.INFO,

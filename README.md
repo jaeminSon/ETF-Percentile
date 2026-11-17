@@ -1,9 +1,10 @@
 # Setting up
 
 ```
-# Backend server
+# Backend server (no database: data lives in backend/data/*.json)
 $ cd backend
-$ pip install -r requirements.txt
+$ uv venv -p 3.11 .venv && uv pip install -p .venv/bin/python -r requirements.txt
+$ ./update_data.sh   # first full download from Yahoo Finance (~2 min)
 
 # Frontend server
 $ cd frontend
@@ -12,7 +13,7 @@ $ npm install
 # Home server
 # portforwarding: router page 에서 세팅 (no-ip 들어가서 Reset Update Client DDNS Key)
 # Caddy for https on mac
-$ brew install caddy
+$ brew install caddy   # or: official binary from github.com/caddyserver/caddy/releases into ~/.local/bin
 
 # Google cloud
 (LLM 의 high level plan 은 다음과 같았음)
@@ -27,9 +28,18 @@ $ brew install caddy
 # Server Command
 
 ```
-# initiate backend server
+# initiate everything (caddy, backend) on the home server
+$ ./initiate-ETF-Percentile.sh
+
+# initiate backend server only
 $ cd backend
-$ gunicorn -w 4 -b 0.0.0.0:8000 wsgi:app
+$ .venv/bin/gunicorn -w 4 -b 0.0.0.0:8000 wsgi:app
+
+# refresh data manually (all tickers, or only some)
+$ cd backend
+$ .venv/bin/python -m gauger.update
+$ .venv/bin/python -m gauger.update SPY QQQ
+# result of the last update: GET /status
 
 # initiate frontend server
 $ cd frontend
@@ -39,7 +49,7 @@ $ npx expo start --android
 $ npx expo run:android
 
 # run caddy for https
-$ sudo caddy run --config ./Caddyfile --adapter caddyfile
+$ caddy run --config ./Caddyfile --adapter caddyfile   # no sudo needed on macOS
 ```
 
 # apk 파일 생성 (실행 파일)
@@ -174,6 +184,9 @@ $ crontab -e
 
 # shell script 에 실행 권한 추가
 chmod +x <path/to/shellscriptfile>
+
+# 예: 매일 10:00 (KST) 데이터 갱신
+0 10 * * * /Users/jaeminson/ETF-Percentile/backend/update_data.sh >> /Users/jaeminson/ETF-Percentile/backend/cron.log 2>&1
 ```
 
 - emulator 에서 error log 보기

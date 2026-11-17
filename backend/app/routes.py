@@ -1,13 +1,12 @@
 import os
 import json
-from typing import List, Dict
-from collections import defaultdict
 from functools import lru_cache
 
 import numpy as np
 from flask import Blueprint, request, jsonify, send_from_directory
 
-from .database import StockModels, initialize_tables, update_database
+from gauger import WINDOWS, load_ticker
+from gauger.store import DATA_DIR
 
 main = Blueprint("main", __name__)
 
@@ -17,114 +16,97 @@ home_images = os.path.abspath(
 )
 home_gauger = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "gauger"))
 
-
-def res2dict(res: List[object]) -> Dict[str, List[object]]:
-    d = defaultdict(list)
-    for r in res:
-        for k, v in r.to_dict().items():
-            d[k].append(v)
-    return d
-
-
-def percentile(values: List[float], index_target: int) -> float:
-    target_value = values[index_target]
-    return np.mean(np.array(values) < target_value) * 100
+CATEGORY_FILES = {
+    "tech": "tech.json",
+    "asset": "asset.json",
+    "global": "country.json",
+    "sector": "sectors.json",
+    "index": "index.json",
+}
 
 
-def extract_data(
-    d: Dict[str, List[object]], window: int, return_series: bool = True
-) -> Dict[str, object]:
-    all_dates = [e.strftime("%Y-%m-%d") for e in d["date"]]
-    price_ratio = d[f"price_ratio_{window}ma"]
-    price_ratio_percentile = percentile(price_ratio, len(all_dates) - 1)
-    volume_percentile = percentile(d["volume"], len(all_dates) - 1)
+def percentile_of_last(values: np.ndarray) -> float:
+    return float(np.mean(values < values[-1]) * 100)
 
+
+@lru_cache(maxsize=2048)
+def _compute(ticker: str, window: int, mtime: float, return_series: bool):
+    # mtime is part of the cache key so results refresh after the daily update.
+    _, df = load_ticker(ticker)
+    if df is None or df.empty:
+        return None
+    price_ratio = df[f"price_ratio_{window}ma"].to_numpy()
+    res = {
+        "price_ratio_percentile": percentile_of_last(price_ratio),
+        "volume_percentile": percentile_of_last(df["volume"].to_numpy()),
+        "ticker": ticker,
+        "window": window,
+    }
     if return_series:
-        return {
-            "date": all_dates,
-            "price_ratio": price_ratio,
-            "price_ratio_percentile": price_ratio_percentile,
-            "volume_percentile": volume_percentile,
-        }
+        res["date"] = df.index.strftime("%Y-%m-%d").tolist()
+        res["price_ratio"] = price_ratio.tolist()
     else:
-        return {
-            "date": all_dates[-1:],
-            "price_ratio_percentile": price_ratio_percentile,
-            "volume_percentile": volume_percentile,
-        }
-
-
-@lru_cache(maxsize=512)
-def serve(ticker: str, window: int):
-    db_model = StockModels[ticker]
-    res_data = db_model.query.order_by(db_model.date.asc()).all()
-    d = res2dict(res_data)
-    res = extract_data(d, window)
-    res["ticker"] = ticker
-    res["window"] = window
+        res["date"] = [df.index[-1].strftime("%Y-%m-%d")]
     return res
 
 
-@lru_cache(maxsize=512)
-def serve_percentile(ticker: str, window: int):
-    db_model = StockModels[ticker]
-    res_data = db_model.query.order_by(db_model.date.asc()).all()
-    d = res2dict(res_data)
-    res = extract_data(d, window, return_series=False)
-    res["ticker"] = ticker
-    res["window"] = window
-    return res
+def compute(ticker: str, window: int, return_series: bool):
+    if not ticker or window not in WINDOWS:
+        return None
+    mtime, _ = load_ticker(ticker)
+    if mtime is None:
+        return None
+    return _compute(ticker, window, mtime, return_series)
+
+
+def _respond(ticker, window, return_series):
+    res = compute(ticker, window, return_series)
+    if res is None:
+        return jsonify({"error": f"No data for ticker={ticker}, window={window}."}), 404
+    return jsonify(res)
 
 
 @main.route("/percentile", methods=["GET"])
 def get_percentile():
     ticker = request.args.get("ticker", type=str)
     window = request.args.get("window", type=int)
-    return jsonify(serve_percentile(ticker, window))
+    return _respond(ticker, window, return_series=False)
 
 
 @main.route("/stocks", methods=["GET"])
 def get_stocks():
     ticker = request.args.get("ticker", type=str)
     window = request.args.get("window", type=int)
-    return jsonify(serve(ticker, window))
+    return _respond(ticker, window, return_series=True)
 
 
 @main.route("/page", methods=["GET"])
 def get_page_data():
     category = request.args.get("category", type=str)
-    category_map = {
-        "tech": "tech.json",
-        "asset": "asset.json",
-        "global": "country.json",
-        "sector": "sectors.json",
-        "index": "index.json",
-    }
-
-    try:
-        json_file_path = os.path.join(home_gauger, category_map[category])
-        with open(json_file_path, "r") as f:
-            data = json.load(f)
-
-        tickers = [item[0] for item in data if item[0]]
-        return jsonify(
-            [
-                serve_percentile(ticker, window)
-                for ticker in tickers
-                for window in [20, 50, 100, 200]
-            ]
-        )
-    except FileNotFoundError:
+    if category not in CATEGORY_FILES:
         return jsonify({"error": "Failed to fetch data."}), 404
 
+    with open(os.path.join(home_gauger, CATEGORY_FILES[category]), "r") as f:
+        data = json.load(f)
 
-@main.route("/update-database", methods=["POST"])
-def update_db():
-    initialize_tables()
-    update_database()
-    serve.cache_clear()
-    serve_percentile.cache_clear()
-    return "Database updated", 200
+    tickers = [item[0] for item in data if item[0]]
+    results = [
+        compute(ticker, window, return_series=False)
+        for ticker in tickers
+        for window in WINDOWS
+    ]
+    # Tickers whose data is missing are skipped instead of failing the whole page.
+    return jsonify([r for r in results if r is not None])
+
+
+@main.route("/status", methods=["GET"])
+def get_status():
+    """Result of the last daily update (which tickers succeeded / failed)."""
+    try:
+        with open(os.path.join(DATA_DIR, "_status.json")) as f:
+            return jsonify(json.load(f))
+    except FileNotFoundError:
+        return jsonify({"error": "No update has run yet."}), 404
 
 
 @main.route("/app-ads.txt")

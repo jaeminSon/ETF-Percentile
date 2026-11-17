@@ -225,3 +225,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# backend runtime
+backend/data/
+backend/.venv/
