@@ -1,5 +1,6 @@
 const withGoogleMobileAds = require("./with-google-mobile-ads");
 const withReleaseSigning = require("./plugins/with-release-signing");
+const withOptionalHardwareFeatures = require("./plugins/with-optional-hardware-features");
 
 export default {
   expo: {
@@ -20,6 +21,8 @@ export default {
     plugins: [
       withGoogleMobileAds,
       [withReleaseSigning, { prefix: "ETF_UPLOAD" }],
+      // Portrait lock stays, but Play must not treat a portrait screen as required hardware.
+      [withOptionalHardwareFeatures, ["android.hardware.screen.portrait"]],
       [
         "expo-build-properties",
         {
@@ -37,7 +40,7 @@ export default {
     ],
     android: {
       package: "com.jaeminson.etfpercentile",
-      versionCode: 9,
+      versionCode: 10,
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#ffffff",
