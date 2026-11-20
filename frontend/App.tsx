@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import LandingScreen from "./screen/LandingScreen";
 import InputScreen from "./screen/InputScreen";
 import GaugeScreen from "./screen/GaugeScreen";
@@ -37,50 +39,60 @@ export default function App() {
     }
   }, []);
 
+  // Android 16 (API 36) always draws apps edge-to-edge: keep content clear of the
+  // status bar and the gesture/navigation bar.
   return (
-    <NavigationContainer linking={linking}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="LandingScreen"
-          component={LandingScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="InputScreen"
-          component={InputScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="GaugeScreen"
-          component={GaugeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ExplainScreen"
-          component={ExplainScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="TechScreen"
-          component={TechScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="AssetScreen"
-          component={AssetScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="GlobalScreen"
-          component={GlobalScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SectorScreen"
-          component={SectorScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <StatusBar style="dark" />
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "white" }}
+        edges={["top", "bottom"]}
+      >
+        <NavigationContainer linking={linking}>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="LandingScreen"
+              component={LandingScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="InputScreen"
+              component={InputScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="GaugeScreen"
+              component={GaugeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ExplainScreen"
+              component={ExplainScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="TechScreen"
+              component={TechScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AssetScreen"
+              component={AssetScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="GlobalScreen"
+              component={GlobalScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SectorScreen"
+              component={SectorScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }

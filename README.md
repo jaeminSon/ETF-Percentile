@@ -77,79 +77,39 @@ $ adb install -r app/build/outputs/apk/release/app-release.apk
 - app-release.apk 파일을 google drive 를 통해 옮겨 폰으로 다운받아서 설치 (카카오톡은 안됨).
 ```
 
-# abb 파일 생성 (구글 플레이 업로드)
+# aab 파일 생성 (구글 플레이 업로드)
+
+android/ 폴더는 `expo prebuild` 로 생성되는 파일이라 직접 수정하지 않음 (gitignore).
+target SDK, 서명, minify, versionCode 는 모두 frontend/app.config.js 와 frontend/plugins/ 에 있음.
+
+- 업로드 키 (한 번만): keystore 는 frontend/credentials/ (gitignore), 비밀번호는 ~/.gradle/gradle.properties
 
 ```
-# pre-build
-$ npx expo prebuild --platform android
+ETF_UPLOAD_STORE_FILE=/Users/jaeminson/ETF-Percentile/frontend/credentials/etf-percentile.keystore
+ETF_UPLOAD_KEY_ALIAS=etf-percentile
+ETF_UPLOAD_STORE_PASSWORD=*****
+ETF_UPLOAD_KEY_PASSWORD=*****
 ```
 
-- keytool 저장
+- 릴리즈마다 frontend/app.config.js 의 `version` 과 `android.versionCode` 를 올림 (versionCode 는 마지막 업로드보다 커야 함)
+
+- aab 생성 (JS bundle 은 gradle 이 자동으로 포함)
 
 ```
-$ keytool -genkeypair -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
-$ mv my-release-key.keystore android/app
-```
-
-- android/gradle.properties 에 upload credential 추가
-
-```
-MYAPP_UPLOAD_STORE_FILE=my-release-key.keystore
-MYAPP_UPLOAD_KEY_ALIAS=my-key-alias
-MYAPP_UPLOAD_STORE_PASSWORD=*****
-MYAPP_UPLOAD_KEY_PASSWORD=*****
-```
-
-- android/gradle.properties 에 fabric / New architecture 사용 안함을 명시
-
-```
-newArchEnabled=false
-```
-
-- android/app/build.gradle 의 android 블락 안에 다음 추가
-
-```
-signingConfigs {
-    release {
-        storeFile file(MYAPP_UPLOAD_STORE_FILE)
-        storePassword MYAPP_UPLOAD_STORE_PASSWORD
-        keyAlias MYAPP_UPLOAD_KEY_ALIAS
-        keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-    }
-}
-
-buildTypes {
-    release {
-        signingConfig signingConfigs.release
-        shrinkResources true
-        minifyEnabled true
-        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-    }
-}
-```
-
-- js bundle 생성
-
-```
-# metro.config.js 가 없는 경우, README 페이지 하단의 misc 의 예제를 참조하여 만들기
-$ npx react-native bundle \
-  --platform android \
-  --dev false \
-  --entry-file index.ts \
-  --bundle-output android/app/src/main/assets/index.android.bundle \
-  --assets-dest android/app/src/main/res
-```
-
-- aab 파일 생성
-
-```
+$ cd frontend
+$ npx expo prebuild --platform android --clean
 $ cd android
-$ ./gradlew clean
 $ ./gradlew bundleRelease
 # android/app/build/outputs/bundle/release/app-release.aab 에 생성됨
-# aab 파일은 에뮬레이터에 설치 안되므로, apk 파일로 테스트후 Play Store 업로드 시에만 활용
+# 테스트용 apk: ./gradlew assembleRelease -> android/app/build/outputs/apk/release/app-release.apk
 # Test and Release tab -> Production tab -> Create New Release button
 ```
+
+- Play 요구사항: target API 36 (Android 16, 2026-08-31 부터), 16 KB page size 지원 (Expo SDK 54 / RN 0.81 로 충족)
+- Play Age Signals API: frontend/modules/age-signals (native module) + frontend/component/ageSignals.ts
+  - 법적으로 공유가 의무인 지역에서만 Play 의 연령 공유 요청 화면을 띄움, 그 외 지역은 이미 공유된 연령만 읽음
+  - 18세 미만이면 광고를 아동/청소년용 설정 (G/PG 등급, 비개인화) 으로 제한. 연령 정보는 저장/전송하지 않음
+  - 테스트 (debug 빌드): `EXPO_PUBLIC_AGE_SIGNALS_TEST="1,13,15" npx expo run:android` (1 SHARED, 2 NOT_SHARED, 3 VERIFICATION_REQUIRED)
 
 # Misc
 
@@ -165,6 +125,8 @@ $ ./gradlew bundleRelease
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
 export JAVA_HOME=$(/usr/libexec/java_home -v17)
+# Mac mini: JDK 17 / Node 22 은 ~/.local/opt 에 설치됨
+# export JAVA_HOME=$HOME/.local/opt/jdk17 PATH=$HOME/.local/opt/node/bin:$PATH
 ```
 
 - metro.config.js 예시
@@ -195,12 +157,12 @@ chmod +x <path/to/shellscriptfile>
 adb logcat "*:E"
 ```
 
-- aab file 생성시 version code 를 android/app/build.gradle 에서 변경해야함
+- aab file 생성시 version code 를 frontend/app.config.js 에서 변경해야함
 
 ```
-defaultConfig {
+android: {
     ...
-    versionCode 2       // <--- Increase this (must be an integer and unique)
+    versionCode: 9,       // <--- Increase this (must be an integer and unique)
     ...
 }
 ```

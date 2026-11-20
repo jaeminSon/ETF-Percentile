@@ -233,3 +233,7 @@ backend/.venv/
 backend/search_for_undervalued_stocks/
 backend/credentials/
 backend/tmp/
+frontend/credentials/
+# local Expo native modules keep their android/ sources in git
+!frontend/modules/*/android/
+frontend/modules/*/android/build/
